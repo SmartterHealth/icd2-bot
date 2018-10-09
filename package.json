@@ -1,0 +1,33 @@
+{
+  "name": "icd2-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmartterHealth/icd2-bot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SmartterHealth/icd2-bot/issues"
+  },
+  "homepage": "https://github.com/SmartterHealth/icd2-bot#readme",
+  "devDependencies": {
+    "@types/node": "^10.11.0",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "botbuilder": "^4.0.6",
+    "botbuilder-dialogs": "^4.0.6",
+    "dotenv": "^6.0.0",
+    "mssql": "^4.2.1",
+    "restify": "^7.2.1"
+  }
+}
