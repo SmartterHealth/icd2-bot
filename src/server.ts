@@ -8,4 +8,4 @@ server.post('/api/messages', bot.default.connector('*').listen());
 
 server.listen(PORT, () => {
     util.log(`ICD2Bot service is listening on port ${PORT}.`);
-})
+});
