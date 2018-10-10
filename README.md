@@ -23,5 +23,7 @@ If you get errors running the stored procedure, check the following:
 * Ensure the current user has execute permissions to the SEARCH_CODES stored procedure.
 * Ensure that the ICD10Codes table has a FULL TEXT INDEX on all columns.
 
+Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
+
 ## Install the ICD2 Bot
 
