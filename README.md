@@ -9,7 +9,7 @@
 
 # Deployment
 
-## Deploy the ICD2DB Database
+## Deploy the ICD2DB Database to Azure
 
 While you can use the database scripts located in *db* to create the database manually, the **easiest** way to get the database up and running is to use [SQL Server Management Studio][11] (v. 14 or greater) to [restore][12] *db/ICD2DB.bak* to a local SQL Server instance, then [deploy the ICD2DB database to Microsoft Azure SQL Server][azsqldeploy]. 
 
@@ -27,9 +27,13 @@ If you get errors running the stored procedure, check the following:
 
 Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
 
-## Install the ICD2 Bot
+## Deploy the ICD2 Bot to Azure
 
 Coming Soon.
+
+# Local Development
+
+IMPORTANT: https://github.com/OfficeDev/Office-365-Huddle-Templates
 
 
 
