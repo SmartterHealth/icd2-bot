@@ -22,7 +22,7 @@ EXEC	[dbo].[SEARCH_CODES] @keywords = N'orbit'
 If you get errors running the stored procedure, check the following:
 
 * Ensure that the **SEARCH_CODES** stored procedure has been created.
-* Ensure the current user has execute permissions to the **SEARCH_CODES** stored procedure.
+* Ensure the current user has execute permissions to the **SEARCH_CODES** stored procedure. The user only needs *read* permissions for the **ICD10Codes** table.
 * Ensure that the **ICD10Codes** table has a *FULL TEXT INDEX* on all columns.
 
 Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
