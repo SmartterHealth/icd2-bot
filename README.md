@@ -1,67 +1,36 @@
-# icd2-bot
-Demonstrate the core capabilties of the Microsoft Bot Framework
+# ICD2 - HLS Central West ICD10 Bot
 
-This bot has been created using [Microsoft Bot Framework][10], it shows how to create a simple echo bot with state. The bot maintains a simple counter that increases with each message from the user. This bot example uses [`restify`][1].
+![alt text](ICD296x96.png "ICD2 Bot!") 
 
-# To run the bot
-- Install modules and start the bot
-    ```bash
-    npm i & npm start
-    ```
-    Alternatively you can also use nodemon via
-    ```bash
-    npm i & npm run watch
-    ```
+# Components
 
-## Prerequisite
-### Install TypeScript
-In order to run this sample, you must have TypeScript installed.  To install TypeScript:
-- Navigate to the [TypeScript portal](https://www.typescriptlang.org).
-- Click the [Download](https://www.typescriptlang.org/#download-links) button.
-- Follow the installation instructions for your development environment.
+* **ICD2DB:** [Microsoft Azure SQL Server][azsql] Database with a single table (ICD10Codes). Each row in the table contains an ICD10 code, and it's associated text description. A full-text index on the table allows for ICD10 codes to be looked up using natural text search. A single stored procedure (SEARCH_CODES) is called by the ICD2-Bot to retrieve ICD10 codes.
+* **ICD2-Bot:** A bot built using the [Microsoft Bot Framework][msbf], [Node.JS][node], and [TypeScript][ts] that handles user input for searching ICD10 codes.
 
-# Testing the bot using Bot Framework Emulator
-[Microsoft Bot Framework Emulator][2] is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
+# Deployment
 
-- Install the Bot Framework emulator from [here][3]
+## Deploy the ICD2DB Database
 
-## Connect to bot using Bot Framework Emulator **V4**
-- Launch Bot Framework Emulator
-- File -> Open Bot Configuration
-- Select `icd2-bot.bot` file
+While you can use the database scripts located in *db* to create the database manually, the **easiest** way to get the database up and running is to use [SQL Server Management Studio][11] (v. 14 or greater) to [restore][12] *db/ICD2DB.bak* to a local SQL Server instance, then [deploy the ICD2DB database to Microsoft Azure SQL Server][azsqldeploy]. 
 
-# Bot state
-A key to good bot design is to track the context of a conversation, so that your bot remembers things like the answers to previous questions. Depending on what your bot is used for, you may even need to keep track of conversation state or store user related information for longer than the lifetime of one given conversation.
+You can test the installation of the database by executing the following stored procedure from SQL Server Management Studio:
 
-In this example, the bot's state is used to track number of messages.
-
- A bot's state is information it remembers in order to respond appropriately to incoming messages. The Bot Builder SDK provides classes for [storing and retrieving state data][4] as an object associated with a user or a conversation.
-
-    - Conversation properties help your bot keep track of the current conversation the bot is having with the user. If your bot needs to complete a sequence of steps or switch between conversation topics, you can use conversation properties to manage steps in a sequence or track the current topic. Since conversation properties reflect the state of the current conversation, you typically clear them at the end of a session, when the bot receives an end of conversation activity.
-
-    - User properties can be used for many purposes, such as determining where the user's prior conversation left off or simply greeting a returning user by name. If you store a user's preferences, you can use that information to customize the conversation the next time you chat. For example, you might alert the user to a news article about a topic that interests her, or alert a user when an appointment becomes available. You should clear them if the bot receives a delete user data activity.
-
-# Deploy this bot to Azure
-You can use the [MSBot][5] Bot Builder CLI tool to clone and configure the services this sample depends on.
-
-To install all Bot Builder tools -
-
-Ensure you have [Node.js](https://nodejs.org/) version 8.5 or higher
-
-```bash
-npm i -g msbot chatdown ludown qnamaker luis-apis botdispatch luisgen
+```
+EXEC	[dbo].[SEARCH_CODES] @keywords = N'orbit'
 ```
 
-To clone this bot, run
-```
-msbot clone services -f deploymentScripts/msbotClone -n myChatBot -l <Azure-location> --subscriptionId <Azure-subscription-id>
-```
+If you get errors running the stored procedure, check the following:
 
-# Further reading
-- [Azure Bot Service Introduction][6]
-- [Bot State][7]
-- [Write directly to storage][8]
-- [Managing conversation and user state][9]
+* Ensure that the **SEARCH_CODES** stored procedure has been created.
+* Ensure the current user has execute permissions to the **SEARCH_CODES** stored procedure.
+* Ensure that the **ICD10Codes** table has a *FULL TEXT INDEX* on all columns.
+
+Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
+
+## Install the ICD2 Bot
+
+Coming Soon.
+
 
 
 [1]: https://www.npmjs.com/package/restify
@@ -73,4 +42,10 @@ msbot clone services -f deploymentScripts/msbotClone -n myChatBot -l <Azure-loca
 [7]: https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-storage-concept?view=azure-bot-service-4.0
 [8]: https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-storage?view=azure-bot-service-4.0&tabs=jsechoproperty%2Ccsetagoverwrite%2Ccsetag
 [9]: https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=js
-[10] https://dev.botframework.com
+[msbf]: https://dev.botframework.com
+[11]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?tview=sql-server-2017
+[12]: https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/restore-a-database-backup-using-ssms?view=sql-server-2017
+[azsqldeploy]: https://docs.microsoft.com/en-us/azure/sql-database/sql-database-cloud-migrate
+[node]: https://nodejs.org/en/
+[ts]: https://www.typescriptlang.org/
+[azsql]: https://azure.microsoft.com/en-us/services/sql-database/

@@ -30,45 +30,74 @@ export class ICD2Bot {
   async onTurn(turnContext) {
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     if (turnContext.activity.type === ActivityTypes.Message) {
+      // Process incoming messages/commands
       let userName = turnContext.activity.from.name;
-      let text = turnContext.activity.text.trim();
+      let userCmd = turnContext.activity.text.trim();
 
-      // HELP
-      if (text.toLowerCase() == 'help') {
-        let message = "HELP";
-        await turnContext.sendActivity(message);
+      if (userCmd.toLowerCase() == 'help') {
+        // HELP
+        await handleHelp(userCmd, turnContext);
 
+      } else if (userCmd.toLowerCase().startsWith('search', 0)) {
         // SEARCH CODES
-      } else if (text.startsWith('search', 0)) {
+        await handleSearchCodes(userCmd, turnContext);
 
-        var matches = text.match(/^(codes|search codes|search)\s?(.*)$/i);
-        var keywords = matches[matches.length - 1];
-
-        await turnContext.sendActivity(`Searching codes for *${keywords}*. Please wait...`);
-
-        let parsedKeywords = parseKeywords(keywords);
-        let results = await searchCodes(parsedKeywords);
-        var count = results.codes.length;
-
-        if (count < 1) {
-          await turnContext.sendActivity(`Sorry! I found 0 results for *${keywords}. Please try another search.`);
-        } else {
-          var list = [];
-          results.codes.forEach(code => {
-            list.push(`\n* ${code.code}: ${code.description}`);
-          });
-          var msg = `Success! Here are ${count} results for *${keywords}:* \n\n` + list.join('\n');
-          await turnContext.sendActivity(msg);
-        }
       } else {
-        await turnContext.sendActivity(`I'm sorry, but I did not understand your request of *${text}*`);
+        // DEFAULT
+        await turnContext.sendActivity(`I'm sorry, ${userName}, but I did not understand your request of *${userCmd}*.`);
       }
 
     } else {
+      // Default
       await turnContext.sendActivity(`Hello, how may I assist you?`);
     }
     // Save state changes
     await this.conversationState.saveChanges(turnContext);
+  }
+}
+
+async function handleHelp(userCmd, turnContext) {
+  const botName = process.env.BOT_NAME || '**ICD2**';
+
+  let message = (`Hi there! I'm ${botName}! In a nutshell, I can assist users with finding ICD10 codes.`);
+  await turnContext.sendActivity(message);
+
+  message = `Here are some sample commands you can use: 
+            \n
+            \n Query for codes using the command *search codes*, then specifying keywords:
+            \n\t search codes edema orbit
+            \n\t search codes obstruction newborn
+            \n
+            \n You can also search for phrases by closing in quotes:
+            \n\t search codes "central nervous system"
+            \n
+            \n You can also combine keywords and phrases:
+            \n\t search codes "central nervous system" neoplasm
+            `;
+
+  await turnContext.sendActivity(message);
+
+}
+
+async function handleSearchCodes(userCmd, turnContext) {
+  var matches = userCmd.match(/^(codes|search codes|search)\s?(.*)$/i);
+  var keywords = matches[matches.length - 1];
+
+  await turnContext.sendActivity(`Searching codes for *${keywords}*. Please wait...`);
+
+  let parsedKeywords = parseKeywords(keywords);
+  let results = await searchCodes(parsedKeywords);
+  var count = results.codes.length;
+
+  if (count < 1) {
+    await turnContext.sendActivity(`Sorry! I found 0 results for *${keywords}*. Please try another search.`);
+  } else {
+    var list = [];
+    results.codes.forEach(code => {
+      list.push(`\n* ${code.code}: ${code.description}`);
+    });
+    var msg = `Success! Here are ${count} results for *${keywords}:* \n\n` + list.join('\n');
+    await turnContext.sendActivity(msg);
   }
 }
 
@@ -78,25 +107,22 @@ function parseKeywords(keyword) {
   return tokens.join(' AND ');
 }
 
-async function searchCodes(keywords) {
+async function searchCodes(keywords) { 
   let results = { codes: [] }
 
-  try {
-    let pool = await sql.connect(config.db);
-    let dbresults = await pool.request()
-      .input('keywords', sql.VarChar(150), keywords)
-      .execute('SEARCH_CODES');
+  let pool = await sql.connect(config.db); 
 
-    //console.log(recordset);
+  try {
+    let dbresults = await pool.request()
+    .input('keywords', sql.VarChar(150), keywords)
+    .execute('SEARCH_CODES');
 
     results.codes = dbresults.recordset;
 
-  } catch (err) {
-    console.error(err)
+  } finally {
+    sql.close();
   }
-
 
   return results;
 }
 
-console.log(config.db)
