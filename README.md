@@ -9,7 +9,13 @@
 
 # Deployment
 
-## Deploy the ICD2DB Database to Azure
+## Tools Needed
+
+* [Azure CLI][azclidownload]
+* SQL Server Management Studio
+
+
+## Step 1: Deploy the ICD2DB Database to Azure
 
 While you can use the database scripts located in *db* to create the database manually, the **easiest** way to get the database up and running is to use [SQL Server Management Studio][11] (v. 14 or greater) to [restore][12] *db/ICD2DB.bak* to a local SQL Server instance, then [deploy the ICD2DB database to Microsoft Azure SQL Server][azsqldeploy]. 
 
@@ -27,9 +33,22 @@ If you get errors running the stored procedure, check the following:
 
 Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
 
-## Deploy the ICD2 Bot to Azure
+## Step 2: Deploy the ICD2 Bot to Azure
 
-Coming Soon.
+### Create the Azure Web App Bot
+
+Clone or [download the *.zip][icd2zip] for the bot source code. If choosing the *.zip download, extract the contents to a working directory.
+
+1. First, Create a web app bot in Azure using the instructions located [here][azbotcreate]. 
+    * Select a good bot name that is meaningful to you.
+    * Make sure you specify a location near you.
+    * Under **Bot Template**, ensure that **SDK Version** is set to *SDK v.4* and **SDK Language** is set to *Node JS*. Choose *Echo Bot*, as we will deploy over this in later steps.
+
+```
+az bot publish --name "your-bot-name" --resource-group "my-resource-group" --code-dir <path to directory>
+```
+
+
 
 # Local Development
 
@@ -57,3 +76,6 @@ IMPORTANT: https://github.com/OfficeDev/Office-365-Huddle-Templates
 [node]: https://nodejs.org/en/
 [ts]: https://www.typescriptlang.org/
 [azsql]: https://azure.microsoft.com/en-us/services/sql-database/
+[azbotcreate]: https://docs.microsoft.com/en-us/azure/bot-service/bot-service-quickstart?view=azure-bot-service-4.0
+[azclidownload]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
+[icd2zip]: https://github.com/SmartterHealth/icd2-bot/archive/master.zip
