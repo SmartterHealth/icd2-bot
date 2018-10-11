@@ -1,34 +1,37 @@
 {
-  "name": "icd2-bot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SmartterHealth/icd2-bot.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SmartterHealth/icd2-bot/issues"
-  },
-  "homepage": "https://github.com/SmartterHealth/icd2-bot#readme",
-  "devDependencies": {
-    "@types/node": "^10.11.0",
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-typescript": "^5.0.0-alpha.3",
-    "typescript": "^3.0.3"
-  },
-  "dependencies": {
-    "botbuilder": "^4.0.6",
-    "botbuilder-azure": "^4.0.6",
-    "botbuilder-dialogs": "^4.0.6",
-    "dotenv": "^6.0.0",
-    "mssql": "^4.2.1",
-    "restify": "^7.2.1"
-  }
+    "name": "icd2-bot",
+    "version": "1.0.0",
+    "description": "Demonstrate the core capabilties of the Microsoft Bot Framework",
+    "author": "Microsoft Bot Builder Yeoman Generator v4.0.10",
+    "license": "MIT",
+    "main": "./lib/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc",
+        "start": "tsc && node ./lib/index.js",
+        "watch": "nodemon --exec tsc && node ./lib/index.js"
+    },
+    "dependencies": {
+        "botbuilder": "^4.0.6",
+        "botframework-config": "^4.0.6",
+        "dotenv": "^6.1.0",
+        "mssql": "^4.2.1",
+        "restify": "^6.3.4"
+    },
+    "devDependencies": {
+        "@types/node": "10.10.2",
+        "@types/restify": "7.2.4",
+        "del": "^3.0.0",
+        "eslint": "^5.6.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-promise": "^4.0.1",
+        "eslint-plugin-standard": "^4.0.0",
+        "gulp": "^3.9.1",
+        "gulp-nodemon": "^2.2.1",
+        "gulp-typescript": "^5.0.0-alpha.3",
+        "nodemon": "^1.18.4",
+        "typescript": "^3.1.2"
+    }
 }

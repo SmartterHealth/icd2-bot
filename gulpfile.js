@@ -1,33 +1,44 @@
-var gulp = require("gulp");
-var ts = require("gulp-typescript");
-var tsProject = ts.createProject("tsconfig.json");
-var del = require("del");
-var exec = require('child_process').exec;
+var gulp = require("gulp"),
+    ts = require("gulp-typescript"),
+    del = require("del"),
+    nodemon = require("gulp-nodemon");
 
-gulp.task("build", ["tsc", "copy"], function() {
+const globs = {
+    src: './src/**/*.*',
+    build: './build/**/*.*',
+    output: './lib/**/*.*'
+}
 
+gulp.task("compile", function () {
+    var project = ts.createProject({
+        "target": "ES6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "noImplicitAny": false
+    });
+    return gulp.src("./src/**/*.ts")
+        .pipe(project())
+        .pipe(gulp.dest("./lib/"))
 });
 
-gulp.task("clean", () => {
-    del(["./messages", "./.funcpack"]);
+gulp.task("clean", function () {
+    del([globs.output]);
 });
 
-gulp.task("copy", function () {
-    return gulp.src("./src/*.json")
-        .pipe(gulp.dest("messages"));
+gulp.task("serve", ["compile"], function() {
+    var stream = nodemon({
+        script: "./lib/index.js",
+        watch: "./src",
+        tasks: ["compile"],
+        env: { "DEBUG": "Application,Request,Response" }
+    });
+    return stream;
 });
 
-gulp.task("tsc", function () {
-    return tsProject.src()
-        .pipe(tsProject())
-        .js.pipe(gulp.dest("messages"));
-});
-
-gulp.task("pack", function() {
-    exec("funcpack pack ./");
-});
-
-gulp.task("serve", ["build"], function() {
-    exec("node messages/index.js")
+gulp.task("default", function() {
+    
 })
-
