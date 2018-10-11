@@ -1,5 +1,7 @@
 # ICD2 Bot
 
+IMPORTANT: https://github.com/OfficeDev/Office-365-Huddle-Templates
+
 # Components
 
 * **ICD2DB:** Microsoft Azure SQL Server Database with a single table (ICD10Codes). Each row in the table contains an ICD10 code, and it's associated text description. A full-text index on the table allows for ICD10 codes to be looked up using natural text search. A single stored procedure (SEARCH_CODES) is called by the ICD2-Bot to retrieve ICD10 codes.

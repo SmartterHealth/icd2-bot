@@ -1,9 +1,15 @@
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
+var del = require("del");
+var exec = require('child_process').exec;
 
 gulp.task("build", ["tsc", "copy"], function() {
 
+});
+
+gulp.task("clean", () => {
+    del(["./messages", "./.funcpack"]);
 });
 
 gulp.task("copy", function () {
@@ -18,6 +24,10 @@ gulp.task("tsc", function () {
 });
 
 gulp.task("pack", function() {
-
+    exec("funcpack pack ./");
 });
+
+gulp.task("serve", ["build"], function() {
+    exec("node messages/index.js")
+})
 

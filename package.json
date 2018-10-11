@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "botbuilder": "^4.0.6",
+    "botbuilder-azure": "^4.0.6",
     "botbuilder-dialogs": "^4.0.6",
     "dotenv": "^6.0.0",
     "mssql": "^4.2.1",
