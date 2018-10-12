@@ -43,10 +43,27 @@ Clone or [download the *.zip][icd2zip] for the bot source code. If choosing the 
     * Select a good bot name that is meaningful to you.
     * Make sure you specify a location near you.
     * Under **Bot Template**, ensure that **SDK Version** is set to *SDK v.4* and **SDK Language** is set to *Node JS*. Choose *Echo Bot*, as we will deploy over this in later steps.
+    * Remember the name of the bot you specified, as well as the resource group you selected. You will need them later during deployment.
 
 ```
-az bot publish --name "your-bot-name" --resource-group "my-resource-group" --code-dir <path to directory>
+az bot publish --name "your-bot-name" --resource-group "your-resource-group" --code-dir <path to directory>
 ```
+
+We'll need to install dependancies:
+
+```
+npm install --production
+```
+
+This command will take several minutes to run, and you will see several warnings during it's execution. Ignore them unless the command fails completely.
+
+Configure the database connection
+
+
+DB_UID=nameofuser
+DB_PWD=passwordofuser
+DB_SERVER=yourdb.database.windows.net
+DB_NAME=ICD2DB
 
 
 
