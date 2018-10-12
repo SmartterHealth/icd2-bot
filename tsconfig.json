@@ -3,7 +3,7 @@
         "target": "es6",
         "module": "commonjs",
         "sourceMap": true,
-        "outDir": "./messages",
+        "outDir": "./lib",
         "declaration": true
     },
     "include": [

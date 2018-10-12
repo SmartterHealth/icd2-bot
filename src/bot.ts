@@ -37,6 +37,10 @@ export class ICD2Bot {
       if (userCmd.toLowerCase() == 'help') {
         // HELP
         await handleHelp(userCmd, turnContext);
+        
+      } else if (userCmd.toLowerCase().startsWith('thank', 0)) {
+        // THANKS
+        await turnContext.sendActivity(`You're most welcome, ${userName}!`);
 
       } else if (userCmd.toLowerCase().startsWith('search', 0)) {
         // SEARCH CODES

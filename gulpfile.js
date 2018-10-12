@@ -1,32 +1,55 @@
 var gulp = require("gulp"),
     ts = require("gulp-typescript"),
     del = require("del"),
+    exec = require('child_process').exec,
+    zip = require("gulp-zip"),
+    path = require('path'),
+    sourcemaps = require('gulp-sourcemaps'),
     nodemon = require("gulp-nodemon");
+
+function PathInfo() {
+        this.glob = function(folder) {
+        return path.join(folder, '**/*.*')
+    }
+    this.package = './package';
+    this.packageAzure = path.join(this.package, 'azure');
+
+    this.source = './src';
+    this.sourceTypeScript = this.glob(this.source, '*.ts');
+    this.output = './lib';
+}
+
+const paths = new PathInfo();
+
+function glob(p, ext = '*.*'){
+    return path.join(p, '**', ext)
+}
 
 const globs = {
     src: './src/**/*.*',
     build: './build/**/*.*',
-    output: './lib/**/*.*'
+    output: './lib/**/*.*',
+    dist: './dist/**/*.*',
+    distAz: './dist/azure'
 }
 
 gulp.task("compile", function () {
-    var project = ts.createProject({
-        "target": "ES6",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "removeComments": true,
-        "noImplicitAny": false
+
+    var project = ts.createProject('tsconfig.json', {
+        typescript: require('typescript'),
+        declaration: true
     });
-    return gulp.src("./src/**/*.ts")
+
+    return gulp.src(paths.sourceTypeScript)
+        .pipe(sourcemaps.init())
         .pipe(project())
-        .pipe(gulp.dest("./lib/"))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(paths.output))
+        
 });
 
 gulp.task("clean", function () {
-    del([globs.output]);
+    del([paths.output, paths.package]);
 });
 
 gulp.task("serve", ["compile"], function() {
@@ -42,3 +65,26 @@ gulp.task("serve", ["compile"], function() {
 gulp.task("default", function() {
     
 })
+
+const packageAzureFiles = [
+    // Keep everything...
+    '**/*.*', 
+
+    // ... but the following:
+    '!node_modules/**/*.*', 
+    '!src/**/*.*', 
+    '!db/**/*.*', 
+    '!icd2-bot.bot',
+    '!tsconfig.json',
+    '!nodemon.json',
+    '!gulpfile.js',
+    '!ICD296x96.png',
+    '!./**/*.md',
+    '!./**/*.ts'
+]
+
+gulp.task('package-azure', ['clean', 'compile'], function() {
+	gulp.src(packageAzureFiles, { compress: true })
+		.pipe(zip('icd2-bot.zip', { compress: true }))
+        .pipe(gulp.dest(paths.packageAzure));
+});

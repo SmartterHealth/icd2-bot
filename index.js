@@ -1,2 +1,1 @@
-// Bootstrap transpiled files in ./lib folder
-require('./lib/index.js');
+require('./lib/index.js')
