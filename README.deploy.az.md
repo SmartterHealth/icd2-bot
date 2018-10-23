@@ -1,4 +1,8 @@
-# Deploying ICD2 to Azure
+# Deploying the ICD2 Bot to Azure
+
+## Deploy the ICD2DB Database to Azure
+
+## Deploy the ICD2 Bot to Azure
 
 Create web app bot in Azure
 

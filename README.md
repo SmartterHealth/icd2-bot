@@ -11,15 +11,32 @@
 
 ## Tools Needed
 
-* [Azure CLI][azclidownload]
-* SQL Server Management Studio
+* [An Azure Subscription][azure].
+* [Azure CLI][azclidownload].
+* [SQL Server Management Studio][sqlmgmtstudio].
 
 
 ## Step 1: Deploy the ICD2DB Database to Azure
 
-While you can use the database scripts located in *db* to create the database manually, the **easiest** way to get the database up and running is to use [SQL Server Management Studio][11] (v. 14 or greater) to [restore][12] *db/ICD2DB.bak* to a local SQL Server instance, then [deploy the ICD2DB database to Microsoft Azure SQL Server][azsqldeploy]. 
+### Tools Needed ###
 
-You can test the installation of the database by executing the following stored procedure from SQL Server Management Studio:
+* [An Azure Subscription][azure].
+* [SQL Server Management Studio][sqlmgmtstudio].
+
+### Installation ###
+
+While you can use the database scripts located in *db* to create the database manually, the **easiest** way to get the database up and running is to perform the following:
+
+1) Download *ICD2DB.bacpac* to your local machine from [here][icd2dbbacpac].
+2) Upload the *ICD2DB.bacpac* file to [Azure Blob Storage.][azblob].
+3) Import the *ICD2DB.bacpac* blob into [Azure SQL Server][azbacpac].
+4) **Recommended:** Using [SQL Server Management Studio][sqlmgmtstudio], create a [SQL Login][sqllogin] and add to the *dbdatareader* role for the database. Use this login when connecting to the database from the ICD2 bot. **Do not** use the admin password.
+
+You will need your database name, login, and password for the next steps.
+
+### Did it Work? ###
+
+You can test the installation of the database by executing the following stored procedure from [SQL Server Management Studio][sqlmgmtstudio]:
 
 ```
 EXEC	[dbo].[SEARCH_CODES] @keywords = N'orbit'
@@ -30,8 +47,6 @@ If you get errors running the stored procedure, check the following:
 * Ensure that the **SEARCH_CODES** stored procedure has been created.
 * Ensure the current user has execute permissions to the **SEARCH_CODES** stored procedure. The user only needs *read* permissions for the **ICD10Codes** table.
 * Ensure that the **ICD10Codes** table has a *FULL TEXT INDEX* on all columns.
-
-Information on the objects in the ICD2DB database can be found [here](DATABASE.md).
 
 ## Step 2: Deploy the ICD2 Bot to Azure
 
@@ -60,10 +75,10 @@ This command will take several minutes to run, and you will see several warnings
 Configure the database connection
 
 
-DB_UID=nameofuser
-DB_PWD=passwordofuser
-DB_SERVER=yourdb.database.windows.net
-DB_NAME=ICD2DB
+* DB_UID=*nameofuser*
+* DB_PWD=*asswordofuser*
+* DB_SERVER=*yourserver*.database.windows.net
+* DB_NAME=*ICD2DB*
 
 
 
@@ -96,3 +111,9 @@ IMPORTANT: https://github.com/OfficeDev/Office-365-Huddle-Templates
 [azbotcreate]: https://docs.microsoft.com/en-us/azure/bot-service/bot-service-quickstart?view=azure-bot-service-4.0
 [azclidownload]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
 [icd2zip]: https://github.com/SmartterHealth/icd2-bot/archive/master.zip
+[azblob]: https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/move-data-to-azure-blob-using-azure-storage-explorer
+[azbacpac]: https://docs.microsoft.com/en-us/azure/sql-database/sql-database-import#import-from-a-bacpac-file-using-azure-portal
+[sqllogin]: https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-2012/aa337562(v=sql.110)
+[icd2dbbacpac]: db/ICD2DB.bacpac
+[sqlmgmtstudio]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017
+[azure]: https://azure.microsoft.com/en-us/
