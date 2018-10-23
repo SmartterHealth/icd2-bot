@@ -72,15 +72,12 @@ npm install --production
 
 This command will take several minutes to run, and you will see several warnings during it's execution. Ignore them unless the command fails completely.
 
-Configure the database connection
-
+Configure the database connection in the web app bot application settings by adding the following values:
 
 * DB_UID=*nameofuser*
 * DB_PWD=*asswordofuser*
 * DB_SERVER=*yourserver*.database.windows.net
 * DB_NAME=*ICD2DB*
-
-
 
 # Local Development
 
