@@ -7,12 +7,17 @@ const { ActivityTypes } = require('botbuilder');
 const sql = require('mssql');
 const { db } = require('./config');
 
-// Turn counter property
+// Turn counter property name
 const TURN_COUNTER_PROPERTY = 'turnCounterProperty';
+
+// Welcomed User property name
+const WELCOMED_USER = 'welcomedUserProperty';
 
 export class ICD2Bot {
   public countProperty;
   public conversationState;
+  public welcomedUserProperty
+
   /**
    *
    * @param {ConversationState} conversation state object
@@ -21,6 +26,7 @@ export class ICD2Bot {
     // Creates a new state accessor property.
     // See https://aka.ms/about-bot-state-accessors to learn more about the bot state and state accessors.
     this.countProperty = conversationState.createProperty(TURN_COUNTER_PROPERTY);
+    this.welcomedUserProperty = conversationState.createProperty(WELCOMED_USER);
     this.conversationState = conversationState;
   }
   /**
@@ -28,8 +34,10 @@ export class ICD2Bot {
    * @param {TurnContext} on turn context object.
    */
   async onTurn(turnContext) {
+
     // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
     if (turnContext.activity.type === ActivityTypes.Message) {
+
       // Process incoming messages/commands
       let userName = turnContext.activity.from.name;
       let userCmd = turnContext.activity.text.trim();
@@ -37,7 +45,7 @@ export class ICD2Bot {
       if (userCmd.toLowerCase() == 'help') {
         // HELP
         await handleHelp(userCmd, turnContext);
-        
+
       } else if (userCmd.toLowerCase().startsWith('thank', 0)) {
         // THANKS
         await turnContext.sendActivity(`You're most welcome, ${userName}!`);
@@ -51,12 +59,30 @@ export class ICD2Bot {
         await turnContext.sendActivity(`I'm sorry, ${userName}, but I did not understand your request of *${userCmd}*.`);
       }
 
-    } else {
-      // Default
-      await turnContext.sendActivity(`Hello, how may I assist you?`);
+    } else if (turnContext.activity.type === ActivityTypes.ConversationUpdate) {
+      handleWelcomeMessage(turnContext)
     }
     // Save state changes
     await this.conversationState.saveChanges(turnContext);
+  }
+}
+
+async function handleWelcomeMessage(turnContext) {
+  // Do we have any new members added to the conversation?
+  if (turnContext.activity.membersAdded.length !== 0) {
+    // Iterate over all new members added to the conversation
+    for (let idx in turnContext.activity.membersAdded) {
+      // Greet anyone that was not the target (recipient) of this message.
+      // Since the bot is the recipient for events from the channel,
+      // context.activity.membersAdded === context.activity.recipient.Id indicates the
+      // bot was added to the conversation, and the opposite indicates this is a user.
+      if (turnContext.activity.membersAdded[idx].id !== turnContext.activity.recipient.id) {
+        const botName = process.env.BOT_NAME || '**ICD2**';
+        let userName = turnContext.activity.from.name;
+        let message = (`Hi there, ${userName}! I'm ${botName}! In a nutshell, I can assist users with finding ICD10 codes.`);
+        await turnContext.sendActivity(message);       
+      }
+    }
   }
 }
 
@@ -111,15 +137,15 @@ function parseKeywords(keyword) {
   return tokens.join(' AND ');
 }
 
-async function searchCodes(keywords) { 
+async function searchCodes(keywords) {
   let results = { codes: [] }
 
-  let pool = await sql.connect(config.db); 
+  let pool = await sql.connect(config.db);
 
   try {
     let dbresults = await pool.request()
-    .input('keywords', sql.VarChar(150), keywords)
-    .execute('SEARCH_CODES');
+      .input('keywords', sql.VarChar(150), keywords)
+      .execute('SEARCH_CODES');
 
     results.codes = dbresults.recordset;
 
