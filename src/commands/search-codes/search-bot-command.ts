@@ -1,6 +1,7 @@
-import { TurnContext } from 'botbuilder';
+import { CardFactory, TurnContext } from 'botbuilder';
 import 'reflect-metadata';
 import { BotCommand, BotCommandBase } from '../bot-command';
+import * as searchCard from './searchCodesCard.json';
 
 const IS_DEFAULT = false;
 
@@ -8,6 +9,9 @@ const IS_DEFAULT = false;
 export class SearchCodesBotCommand extends BotCommandBase {
 
     public async execute(context: TurnContext, args: string) {
-        await context.sendActivity(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+        console.log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+        await context.sendActivity({
+            attachments: [CardFactory.adaptiveCard(searchCard)],
+        });
     }
 }
