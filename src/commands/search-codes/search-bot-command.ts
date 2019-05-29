@@ -43,6 +43,7 @@ async function searchCodes(keywords): Promise<IICD10SearchResults> {
     try {
         const dbresults = await pool.request()
             .input('keywords', sql.VarChar(150), keywords)
+            .input('maxrows', sql.Int, settings.searchCodes.maxRows)
             .execute('SEARCH_CODES');
 
         results.codes = dbresults.recordset as IICD10Code[];

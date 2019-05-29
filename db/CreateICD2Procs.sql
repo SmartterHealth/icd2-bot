@@ -11,7 +11,8 @@ GO
 
 CREATE PROCEDURE [dbo].[SEARCH_CODES]
 (
-    @keywords VARCHAR(150)
+    @keywords VARCHAR(150),
+	@maxrows INT
 )
 AS
 BEGIN
@@ -19,7 +20,7 @@ BEGIN
     -- interfering with SELECT statements.
     SET NOCOUNT ON
 
-		SELECT TOP (250) 
+		SELECT TOP (@maxrows) 
 		   [code]
 		  ,[hipaa]
 		  ,[description]

@@ -19,6 +19,24 @@ const settings = {
             "encrypt": true,
         },
     },
+    searchCodes: {
+        maxRows: checkInt(process.env.SC_MAXROWS, 25),
+    },
 };
+
+function checkInt(value, defaultValue) {
+    if (value === undefined || value === null) {
+        value = defaultValue;
+    }
+
+    try {
+        // tslint:disable-next-line:radix
+        value = parseInt(value);
+    } catch (err) {
+        value = defaultValue;
+    }
+
+    return value;
+}
 
 export { settings };
