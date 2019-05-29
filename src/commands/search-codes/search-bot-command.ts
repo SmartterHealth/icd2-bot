@@ -4,10 +4,10 @@ import { BotCommand, BotCommandBase } from '../bot-command';
 
 const IS_DEFAULT = false;
 
-@BotCommand( 'Search Codes', ['search', 'search codes'], IS_DEFAULT)
+@BotCommand( 'Search Codes', ['search', 'search codes', 'sc'], IS_DEFAULT)
 export class SearchCodesBotCommand extends BotCommandBase {
 
-    public execute(context: TurnContext, args: string) {
-        console.log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+    public async execute(context: TurnContext, args: string) {
+        await context.sendActivity(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
     }
 }

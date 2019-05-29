@@ -22,10 +22,15 @@ export class ICD2Bot extends ActivityHandler {
 
         this.onMessage(async (context, next) => {
             const commandText = context.activity.text.trim();
-            botCommandAdapter.execute(context, commandText);
 
-            // By calling next() you ensure that the next BotHandler is run.
-            await next();
+            try {
+                await botCommandAdapter.execute(context, commandText);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                // By calling next() you ensure that the next BotHandler is run.
+                await next();
+            }
         });
     }
 

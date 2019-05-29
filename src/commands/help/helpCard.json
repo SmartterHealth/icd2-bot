@@ -1,0 +1,70 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "style": "Person",
+                                    "url": "https://i.imgur.com/YAmuJGY.jpg",
+                                    "size": "Small"
+                                }
+                            ],
+                            "width": "auto"
+                        },
+                        {
+                            "type": "Column",
+                            "verticalContentAlignment": "Center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "help",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Welcome to ICD2 Bot, User! This bot will assist you with ICD10 codes. Please select an option:",
+                    "wrap": true
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Search ICD10 Codes by Keyword(s)",
+            "data": "help search codes"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Get ICD10 Code Details",
+            "data": "help get code"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Help",
+            "data": "help"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0"
+}

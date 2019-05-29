@@ -6,7 +6,7 @@ export class BotCommandAdapter {
 
     private _commandTypes: typeof BotCommandBase[] = [];
     private _possibleCommands: string[] = [];
-    private _commandTextParser: RegExp = null;
+    private _commandTextParser: string = null;
     private _commandMapping = {
         default: null
     }
@@ -16,7 +16,7 @@ export class BotCommandAdapter {
         this.initCommandTypes(commandTypes);
 
         ///^(search\s*codes|get\s*code|help)\s*(.*)$/gim;
-        this._commandTextParser = new RegExp(`^($${this._possibleCommands.join('|')})\s*(.*)$`, 'gim').compile();
+        this._commandTextParser = `^(${this._possibleCommands.join('|')})\s*(.*)$`;
     }
 
     private initCommandTypes(registrations: typeof BotCommandBase[]) {
@@ -36,8 +36,9 @@ export class BotCommandAdapter {
         }
     }
 
-    public execute(context: TurnContext, commandText: string) {
-        const matches = this._commandTextParser.exec(commandText);
+    public async execute(context: TurnContext, commandText: string) {
+        const re = new RegExp(this._commandTextParser, 'gim');
+        const matches = re.exec(commandText);
         let cmd: BotCommandBase = null;
         let args: string = null;
 
@@ -52,6 +53,6 @@ export class BotCommandAdapter {
         }
 
         // Execute the command.
-        cmd.execute(context, args);
+        await cmd.execute(context, args);
     }
 }
