@@ -23,7 +23,5 @@ export class HelpBotCommand extends BotCommandBase {
                                 attachments: [CardFactory.adaptiveCard(helpCard)],
                             });
         }
-        
-        
     }
 }
