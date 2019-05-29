@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "sourceMap": true,
-        "outDir": "./lib",
-        "declaration": true
-    },
-    "include": [
-        "./src"
-    ],
-    "compileOnSave": true
-}
+      "declaration": true,
+      "target": "es2017",
+      "module": "commonjs",
+      "sourceMap": true,
+      "outDir": "./lib",
+      "rootDir": "./src",
+      "resolveJsonModule": true,
+      "experimentalDecorators": true
+    }
+  }
+  
