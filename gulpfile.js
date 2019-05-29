@@ -1,6 +1,8 @@
 const gulp = require('gulp');
 const  del  = require('del');
-const { exec, spawn } = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+const nodemon = require('gulp-nodemon');
 
 function clean() {
     return del('./lib');
@@ -13,22 +15,15 @@ function tsc() {
 tsc.description = "Compiles all TypeScript."
 
 const watch = (done) => {
-    gulp.watch(['./src/**/*.*'], gulp.series(clean, tsc, serve));
-    done();
+    return gulp.watch(['./src/**/*.*'], gulp.series(serve));
 }
 
 function start(done) {
-    let ls = spawn('node',['./lib/index.js'], { cwd: __dirname });
-    ls.stdout.on('data', function(data) {
-        console.log(data.toString());
-    });
-
-    ls.stderr.on('data', function(data) {
-        console.log(data.toString());
-    });
-
-    ls.on('exit', function (code) {
-        console.log('child process exited with code ' + code.toString());
+    return nodemon({
+        script: './lib/index.js',
+        ext: 'ts json js',
+        tasks: ['build'],
+        done: done
     });
 }
 

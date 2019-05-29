@@ -11,16 +11,18 @@ import { BotFrameworkAdapter } from 'botbuilder';
 
 // This bot's main dialog.
 import { ICD2Bot } from './bot';
+import { log } from './logger';
 
 const ENV_FILE = path.join(__dirname, '..', '.env');
 config({ path: ENV_FILE });
 
 // Create HTTP server.
 const server = restify.createServer();
+server.name = 'ICD2 Bot';
 server.listen(process.env.port || process.env.PORT || 3978, () => {
-    console.log(`\n${server.name} listening to ${server.url}`);
-    console.log(`\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator`);
-    console.log(`\nSee https://aka.ms/connect-to-bot for more information`);
+    log(`${server.name} listening to ${server.url}`);
+    log(`Get Bot Framework Emulator: https://aka.ms/botframework-emulator`);
+    log(`See https://aka.ms/connect-to-bot for more information`);
 });
 
 // Create adapter.
