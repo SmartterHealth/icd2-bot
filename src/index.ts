@@ -4,6 +4,7 @@
 import { config } from 'dotenv';
 import * as path from 'path';
 import * as restify from 'restify';
+import { settings } from './settings';
 
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
@@ -13,14 +14,11 @@ import { BotFrameworkAdapter } from 'botbuilder';
 import { ICD2Bot } from './bot';
 import { log } from './logger';
 
-const ENV_FILE = path.join(__dirname, '..', '.env');
-config({ path: ENV_FILE });
-
 // Create HTTP server.
 const server = restify.createServer();
 server.name = 'ICD2 Bot';
-server.listen(process.env.port || process.env.PORT || 3978, () => {
-    log(`${server.name} listening to ${server.url}`);
+server.listen(settings.bot.port, () => {
+    log(`${server.name} listening to ${server.url}.`);
     log(`Get Bot Framework Emulator: https://aka.ms/botframework-emulator`);
     log(`See https://aka.ms/connect-to-bot for more information`);
 });
@@ -50,3 +48,15 @@ server.post('/api/messages', (req, res) => {
         await myBot.run(context);
     });
 });
+
+function initialize() {
+    if (settings === undefined || settings === null) {
+        throw new Error('Settings are not properly configured.');
+    }
+
+    if (settings.db === undefined || settings.db === null) {
+        throw new Error('Database settings are not properly configured.');
+    }
+}
+
+initialize();

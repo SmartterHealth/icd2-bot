@@ -3,6 +3,8 @@ import 'reflect-metadata';
 
 const registrations: Array<typeof BotCommandBase> = [];
 
+export type BotCommandNames = 'get code' | 'search codes' | 'help';
+
 export function BotCommand(displayName: string, commands: string[], isDefault = false ): ClassDecorator {
 
     // tslint:disable-next-line:ban-types
