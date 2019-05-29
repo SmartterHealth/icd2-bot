@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
 import { BotCommand, BotCommandBase } from '../bot-command';
-import { IICD10Code, IICD10SearchResults } from './IICD10Code';
+import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchAdaptiveCard } from './search-adaptive-cards';
 
 const IS_DEFAULT = false;

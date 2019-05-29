@@ -1,7 +1,7 @@
 import { AdaptiveCard, Column, ColumnSet, Container, SubmitAction, TextBlock, TextWeight, VerticalAlignment} from 'adaptivecards';
 import { Attachment, CardFactory } from 'botbuilder';
 import { AdaptiveCardHelper as ach } from '../adaptive-card-helper';
-import { IICD10Code, IICD10SearchResults } from './IICD10Code';
+import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 
 export class SearchAdaptiveCard {
     public get maxResultsRendered() : number {
