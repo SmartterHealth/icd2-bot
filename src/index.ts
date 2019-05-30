@@ -21,13 +21,14 @@ server.listen(settings.bot.port, () => {
     log(`${server.name} listening to ${server.url}.`);
     log(`Get Bot Framework Emulator: https://aka.ms/botframework-emulator`);
     log(`See https://aka.ms/connect-to-bot for more information`);
+    log(`Bot is registered using AppID '${settings.bot.appId}`);
 });
 
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new BotFrameworkAdapter({
-    appId: process.env.MicrosoftAppID,
-    appPassword: process.env.MicrosoftAppPassword,
+    appId: settings.bot.appId,
+    appPassword: settings.bot.appPassword,
 });
 
 // Catch-all for errors.

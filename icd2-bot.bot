@@ -4,21 +4,21 @@
     "services": [
         {
             "type": "endpoint",
-            "appId": "",
-            "appPassword": "",
+            "appId": "79a474c5-864b-47ad-80be-c1bb0caf9fbf",
+            "appPassword": "(_K|OSRzilC96B}Ob+_k:k.GMN$4E.",
             "endpoint": "http://localhost:3978/api/messages",
             "id": "1",
             "name": "development"
         },
         {
             "type": "endpoint",
-            "endpoint": "http://localhost:3978/api/messages",
-            "name": "test",
-            "id": "98"
+            "endpoint": "https://icd2-bot10.azurewebsites.net/api/messages",
+            "id": "98",
+            "name": "test"
         }
     ],
     "padlock": "",
     "version": "2.0",
-    "path": "C:\\Development\\SmartterHealth\\icd2-bot\\icd2-bot.bot",
+    "path": "/Users/tyler/Development/smartterhealth/icd2-bot/icd2-bot.bot",
     "overrides": null
 }

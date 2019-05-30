@@ -7,8 +7,8 @@ const settings = {
     bot: {
         // tslint:disable-next-line:radix
         port: parseInt(process.env.BOT_PORT) || 3978,
-        appId: process.env.BOT_APPID,
-        appPassword: process.env.BOT_PASSWORD,
+        appId: process.env.MicrosoftAppId,
+        appPassword: process.env.MicrosoftAppPassword,
     },
     db: {
         server: process.env.DB_SERVER,

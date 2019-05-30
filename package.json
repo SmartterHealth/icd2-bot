@@ -13,7 +13,9 @@
     "gulp": "^4.0.2",
     "reflect-metadata": "^0.1.13",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   },
   "dependencies": {
     "adaptivecards": "^1.1.3",

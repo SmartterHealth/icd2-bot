@@ -9,8 +9,10 @@ const IS_DEFAULT = true;
 export class HelpBotCommand extends BotCommandBase {
 
     public async execute(context: TurnContext, args: string) {
-        console.log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+        args = (args === undefined || args === null) ? '' : args;
 
+        console.log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
+        
         switch (args.trim()) {
             case 'search codes':
                     await context.sendActivity({
