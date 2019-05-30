@@ -6,15 +6,15 @@ dotenv.config();
 const settings = {
     bot: {
         // tslint:disable-next-line:radix
-        port: parseInt(process.env.BOT_PORT) || 3978,
+        port: parseInt(process.env.BotPort) || 3978,
         appId: process.env.MicrosoftAppId,
         appPassword: process.env.MicrosoftAppPassword,
     },
     db: {
-        server: process.env.DB_SERVER,
-        database: process.env.DB_NAME,
-        user: process.env.DB_USERID,
-        password: process.env.DB_PASSWORD,
+        server: process.env.DbServer,
+        database: process.env.DbName,
+        user: process.env.DbUserId,
+        password: process.env.DbPassword,
         options: {
             "encrypt": true,
         },
