@@ -1,4 +1,4 @@
-import { AdaptiveCard, Column, ColumnSet, Container, SubmitAction, TextBlock, TextWeight, VerticalAlignment} from 'adaptivecards';
+import { AdaptiveCard, Column, ColumnSet, Container, SubmitAction, TextBlock, TextWeight, VerticalAlignment, OpenUrlAction} from 'adaptivecards';
 import { Attachment, CardFactory } from 'botbuilder';
 import { AdaptiveCardHelper as ach } from '../adaptive-card-helper';
 import { IICD10Code } from '../IICD10Code';
@@ -10,6 +10,8 @@ export class GetCodeAdaptiveCard {
     public renderAttachment(code: IICD10Code): Attachment {
         if (this.card === null) {
             this.card = new AdaptiveCard();
+
+            this.card.addAction(ach.createUrlAction(`https://www.bing.com/search?q=icd10 code ${code.code}`, 'Open in Bing Search'));
 
             this.createHeader(this.card);
 

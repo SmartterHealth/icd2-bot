@@ -1,4 +1,4 @@
-import { AdaptiveCard, CardElement, Column, ColumnSet, ColumnWidth, Container, Image, Size, SubmitAction, TextBlock, TextWeight, VerticalAlignment} from 'adaptivecards';
+import { AdaptiveCard, CardElement, Column, ColumnSet, ColumnWidth, Container, Image, OpenUrlAction, Size, SubmitAction, TextBlock, TextWeight, VerticalAlignment} from 'adaptivecards';
 import { Attachment, CardFactory } from 'botbuilder';
 
 export type ColumnItems = CardElement | CardElement[];
@@ -73,5 +73,13 @@ export class AdaptiveCardHelper {
         img.size = size;
 
         return img;
+    }
+
+    public static createUrlAction(url: string, title: string): OpenUrlAction {
+        const oua = new OpenUrlAction();
+        oua.url = url;
+        oua.title = title;
+
+        return oua;
     }
 }
