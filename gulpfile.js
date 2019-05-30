@@ -18,6 +18,8 @@ const watch = (done) => {
     return gulp.watch(['./src/**/*.*'], gulp.series(serve));
 }
 
+
+
 function start(done) {
     return nodemon({
         script: './lib/index.js',
@@ -27,7 +29,39 @@ function start(done) {
     });
 }
 
+const packageAzureFiles = [
+    // Keep everything...
+    '**/*.*',
+
+    // ... but the following:
+    '!node_modules/**/*.*', 
+    '!src/**/*.*', 
+    '!db/**/*.*', 
+    '!icd2-bot.bot',
+    '!tsconfig.json',
+    '!nodemon.json',
+    '!gulpfile*.js',
+    '!ICD296x96.png',
+    '!./**/*.md',
+    '!./**/*.ts',
+    '!**/*.bot',
+    '!*.env',
+    '!package/**/*.*',
+    '!web.config.old',
+    '!webpack.config.js'
+]
+
+function package(done) {
+    return del('./deployment')
+    .then((value) => {
+        gulp.src(packageAzureFiles)
+    .pipe(gulp.dest('./deployment/package'));
+
+
+    });
+}
+
 const build = gulp.series(clean, tsc);
 const serve = gulp.series(build, start);
 
-module.exports = { clean, build, serve, tsc, watch }
+module.exports = { clean, build, serve, tsc, watch, package }

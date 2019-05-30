@@ -6,7 +6,7 @@ dotenv.config();
 const settings = {
     bot: {
         // tslint:disable-next-line:radix
-        port: parseInt(process.env.BotPort) || 3978,
+        port: process.env.port || process.env.PORT || 3978,
         appId: process.env.MicrosoftAppId,
         appPassword: process.env.MicrosoftAppPassword,
     },

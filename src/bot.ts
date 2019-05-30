@@ -6,6 +6,7 @@ import { BotCommandAdapter } from './bot-command-adapter';
 import { GetCodeBotCommand } from './commands/get-code/get-code-bot-command';
 import { HelpBotCommand } from './commands/help/help-bot-command';
 import { SearchCodesBotCommand } from './commands/search-codes/search-bot-command';
+import { log } from './logger';
 
 const botCommandAdapter = new BotCommandAdapter([SearchCodesBotCommand, GetCodeBotCommand, HelpBotCommand]);
 
@@ -44,6 +45,7 @@ export class ICD2Bot extends ActivityHandler {
         // Iterate over all new members added to the conversation.
         for (const idx in activity.membersAdded) {
             if (activity.membersAdded[idx].id !== activity.recipient.id) {
+                log(`User '' added to chat session.`);
                 await this.sendWelcomeCard(turnContext);
             }
         }

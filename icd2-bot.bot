@@ -14,7 +14,9 @@
             "type": "endpoint",
             "endpoint": "https://icd2-bot10.azurewebsites.net/api/messages",
             "id": "98",
-            "name": "test"
+            "name": "test",
+            "appId": "79a474c5-864b-47ad-80be-c1bb0caf9fbf",
+            "appPassword": "(_K|OSRzilC96B}Ob+_k:k.GMN$4E."
         }
     ],
     "padlock": "",
