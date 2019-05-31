@@ -22,9 +22,10 @@ export class ICD2Bot extends ActivityHandler {
         });
 
         this.onMessage(async (context, next) => {
-            const commandText = context.activity.text.trim();
+            
 
             try {
+                const commandText = context.activity.text.trim();
                 await botCommandAdapter.execute(context, commandText);
             } catch (err) {
                 console.log(err);

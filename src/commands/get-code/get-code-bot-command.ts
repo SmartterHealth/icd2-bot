@@ -12,6 +12,7 @@ const IS_DEFAULT = false;
 @BotCommand('Get Code', ['gc', 'get code', 'code'], IS_DEFAULT)
 export class GetCodeBotCommand extends BotCommandBase {
     public async execute(context: TurnContext, args: string) {
+        args = (args === undefined || args === null) ? '' : args;
         args = args.trim();
         log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
         const code = await getCode(args);
