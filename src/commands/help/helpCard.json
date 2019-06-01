@@ -14,7 +14,7 @@
                                 {
                                     "type": "Image",
                                     "style": "Person",
-                                    "url": "https://i.imgur.com/YAmuJGY.jpg",
+                                    "url": "https://i.imgur.com/YAmuJGY.jpg?1",
                                     "size": "Small"
                                 }
                             ],
@@ -52,17 +52,39 @@
         {
             "type": "Action.Submit",
             "title": "Search ICD10 Codes by Keyword(s)",
-            "data": "help search codes"
+            "text": "help search codes",
+            "data": {
+                "msteams": {
+                    "type": "messageBack",
+                    "text": "help search codes",
+                    "displayText": "help search codes",
+                    "value": "help search codes"
+                }
+            }
         },
         {
             "type": "Action.Submit",
             "title": "Get ICD10 Code Details",
-            "data": "help get code"
+            "data": {
+                "msteams": {
+                    "type": "messageBack",
+                    "text": "help get code",
+                    "displayText": "help get code",
+                    "value": "help get code"
+                }
+            }
         },
         {
             "type": "Action.Submit",
             "title": "Help",
-            "data": "help"
+            "data": {
+                "msteams": {
+                    "type": "messageBack",
+                    "text": "help",
+                    "displayText": "help",
+                    "value": "help"
+                }
+            }
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

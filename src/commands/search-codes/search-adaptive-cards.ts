@@ -4,16 +4,16 @@ import { AdaptiveCardHelper as ach } from '../adaptive-card-helper';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 
 export class SearchAdaptiveCard {
-    public get maxResultsRendered() : number {
+    public get maxResultsRendered(): number {
         return this._maxResultsRendered;
     }
-    public set maxResultsRendered(v : number) {
+    public set maxResultsRendered(v: number) {
         this._maxResultsRendered = v;
     }
 
-    private _maxResultsRendered : number;
+    private _maxResultsRendered: number;
 
-    private card: AdaptiveCard = null;
+    private card: AdaptiveCard;
 
     constructor(maxResultsRendered: number = 50) {
         this.maxResultsRendered = maxResultsRendered;
@@ -57,7 +57,7 @@ export class SearchAdaptiveCard {
     private createHeader(card: AdaptiveCard) {
         card.addItem(
             ach.createColumnSet([
-                ach.createColumn(ach.createImage('https://i.imgur.com/YAmuJGY.jpg')),
+                ach.createColumn(ach.createImage('https://i.imgur.com/YAmuJGY.jpg?1')),
                 ach.createColumn(ach.createTextBlock('search codes')),
             ]),
         );

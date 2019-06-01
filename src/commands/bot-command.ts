@@ -37,9 +37,9 @@ export abstract class BotCommandBase {
         return instance;
     }
 
-    private _displayName: string = undefined;
-    private _commands: string[] = undefined;
-    private _isDefault: boolean = undefined;
+    private _displayName: string;
+    private _commands: string[];
+    private _isDefault: boolean;
 
     public abstract execute(context: TurnContext, args: string);
 }

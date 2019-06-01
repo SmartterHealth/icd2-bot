@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { ActivityHandler, CardFactory, TurnContext } from 'botbuilder';
-import { BotCommandAdapter } from './bot-command-adapter';
+import { BotCommandAdapter } from './commands/bot-command-adapter';
 import { GetCodeBotCommand } from './commands/get-code/get-code-bot-command';
 import { HelpBotCommand } from './commands/help/help-bot-command';
 import { SearchCodesBotCommand } from './commands/search-codes/search-bot-command';
@@ -22,11 +22,15 @@ export class ICD2Bot extends ActivityHandler {
         });
 
         this.onMessage(async (context, next) => {
-            
 
             try {
-                const commandText = context.activity.text.trim();
-                await botCommandAdapter.execute(context, commandText);
+                let commandText = context.activity.text;
+
+                if ((!commandText) && context.activity.value && context.activity.value.msteams) {
+                    commandText = context.activity.value.msteams.text;
+                }
+
+                await botCommandAdapter.execute(context, commandText.trim());
             } catch (err) {
                 console.log(err);
             } finally {

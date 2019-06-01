@@ -83,3 +83,7 @@ export class AdaptiveCardHelper {
         return oua;
     }
 }
+
+interface ITeamsSubmitAction {
+    title: string;
+}

@@ -2,6 +2,7 @@ import { CardFactory, TurnContext } from 'botbuilder';
 import { BotCommand, BotCommandBase } from '../bot-command';
 import * as helpCard from './helpCard.json';
 import * as helpSearchCodesCard from './helpSearchCodes.json';
+import { HelpAdaptiveCardHelper } from './help-adaptive-card-helper';
 
 const IS_DEFAULT = true;
 
@@ -12,7 +13,15 @@ export class HelpBotCommand extends BotCommandBase {
         args = (args === undefined || args === null) ? '' : args;
 
         console.log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
-        
+
+        const card = new HelpAdaptiveCardHelper(context);
+
+        await context.sendActivity({
+            attachments: [card.renderAsAttachment()],
+        });
+
+        return;
+
         switch (args.trim()) {
             case 'search codes':
                     await context.sendActivity({

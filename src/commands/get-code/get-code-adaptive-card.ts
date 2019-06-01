@@ -5,7 +5,7 @@ import { IICD10Code } from '../IICD10Code';
 
 export class GetCodeAdaptiveCard {
 
-    private card: AdaptiveCard = null;
+    private card: AdaptiveCard;
 
     public renderAttachment(code: IICD10Code): Attachment {
         if (this.card === null) {
@@ -27,7 +27,7 @@ export class GetCodeAdaptiveCard {
     private createHeader(card: AdaptiveCard) {
         card.addItem(
             ach.createColumnSet([
-                ach.createColumn(ach.createImage('https://i.imgur.com/YAmuJGY.jpg')),
+                ach.createColumn(ach.createImage('https://i.imgur.com/YAmuJGY.jpg?1')),
                 ach.createColumn(ach.createTextBlock('get code', TextWeight.Bolder)),
             ]),
         );

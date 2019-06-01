@@ -14,7 +14,7 @@
                                 {
                                     "type": "Image",
                                     "style": "Person",
-                                    "url": "https://i.imgur.com/YAmuJGY.jpg",
+                                    "url": "https://i.imgur.com/YAmuJGY.jpg?1",
                                     "size": "Small"
                                 }
                             ],
@@ -96,7 +96,14 @@
         {
             "type": "Action.Submit",
             "title": "Try a search now!",
-            "data": "search codes edema orbit"
+            "data": {
+                "msteams": {
+                    "type": "messageBack",
+                    "text": "search codes edema orbit",
+                    "displayText": "search codes edema orbit",
+                    "value": "search codes edema orbit"
+                }
+            }
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

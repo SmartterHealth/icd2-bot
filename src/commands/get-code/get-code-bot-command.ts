@@ -16,17 +16,20 @@ export class GetCodeBotCommand extends BotCommandBase {
         args = args.trim();
         log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
         const code = await getCode(args);
-        log(`ICD10 code '${args}' found! ${JSON.stringify(code)}.`);
 
-        const card = new GetCodeAdaptiveCard();
+        if (code) {
+            log(`ICD10 code '${args}' found! ${JSON.stringify(code)}.`);
 
-        await context.sendActivity({
+            const card = new GetCodeAdaptiveCard();
+
+            await context.sendActivity({
             attachments: [card.renderAttachment(code)],
         });
+        }
     }
 }
 
-async function getCode(code: string): Promise<IICD10Code> {
+async function getCode(code: string): Promise<IICD10Code | undefined> {
     const codes: IICD10Code[] = [];
     let result: IICD10Code;
     const pool = await sql.connect(settings.db);
@@ -38,11 +41,9 @@ async function getCode(code: string): Promise<IICD10Code> {
 
         if (dbresults.recordset.length > 0) {
             result = dbresults.recordset[0] as IICD10Code;
+            return result;
         }
-
     } finally {
         sql.close();
     }
-
-    return result;
 }
