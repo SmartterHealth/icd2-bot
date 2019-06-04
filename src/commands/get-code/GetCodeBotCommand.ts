@@ -5,6 +5,7 @@ import { log } from '../../logger';
 import { settings } from '../../settings';
 import { BotCommand, BotCommandBase } from '../BotCommand';
 import { IICD10Code } from '../IICD10Code';
+import { GetCodeAdaptiveCardHelper } from './GetCodeAdaptiveCardHelper';
 
 const IS_DEFAULT = false;
 
@@ -18,6 +19,16 @@ export class GetCodeBotCommand extends BotCommandBase {
 
         if (code) {
             log(`ICD10 code '${args}' found! ${JSON.stringify(code)}.`);
+
+            const card = new GetCodeAdaptiveCardHelper(context);
+            card.args = args;
+            card.headerTitle = this.displayName;
+            card.headerDescription = `Test`;
+            card.dataSource = code;
+
+            await context.sendActivity({
+                attachments: [card.render()],
+            });
         }
     }
 }

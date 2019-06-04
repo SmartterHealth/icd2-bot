@@ -1,6 +1,7 @@
 import { TurnContext } from "botbuilder";
 import { Assert } from "../assert";
 import * as path from 'path';
+import { type } from "os";
 
 export abstract class AdaptiveCardHelperBase {
     
@@ -52,9 +53,28 @@ export abstract class AdaptiveCardHelperBase {
         return (this.context != null && this.context.activity.value != null && this.context.activity.value.msteams != undefined)
     }
 
-    protected createSubmitAction(options: ICardAction) {
+    protected createAction2(options: ICardAction) {
         let action: any = Object.assign({}, options);
-        action.type = 'Action.Submit';
+        action.type = `Action.${CardActionType[action.type]}`;
+        console.log(action);
+        return type;
+    }
+
+    protected createAction(options: ICardAction) {
+
+        let action = Object.assign({}, options);
+        action['type'] = `Action.${CardActionType[options.actionType]}`;
+
+        if(this.isMSTeams == true) {
+            action.data = {
+                msteams: {
+                    "type": "messageBack",
+                    "text": options.title,
+                    "displayText": options.title,
+                    "value": options.data
+                }
+            }
+        }
 
         return action;
     }
@@ -86,7 +106,18 @@ export abstract class AdaptiveCardHelperBase {
     }
 }
 
-interface ICardAction {
-    title: string,
-    data: any
+export type CardActionTypeName = 'Action.Submit' | 'Action.OpenUrl';
+
+export interface ICardAction {
+    id?: string;
+    title: string;
+    actionType: CardActionType;
+    iconUrl?: string;
+    data?: any;
+    url?: string;
+}
+
+export enum CardActionType {
+    OpenUrl,
+    Submit
 }

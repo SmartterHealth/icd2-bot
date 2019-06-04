@@ -1,7 +1,7 @@
 import { Attachment, CardFactory, TurnContext } from 'botbuilder';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { Assert } from '../../assert';
-import { AdaptiveCardHelperBase } from '../AdaptiveCardHelperBase';
+import { AdaptiveCardHelperBase, CardActionType } from '../AdaptiveCardHelperBase';
 import * as path from 'path';
 
 export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
@@ -23,7 +23,7 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
             root.columns[0].items[0].text = result.code;
             root.columns[1].items[0].text = result.description;
 
-            root.selectAction = this.createSubmitAction({title: result.code, data: `get code ${result.code}` });
+            root.selectAction = this.createAction({title: result.code, actionType: CardActionType.Submit, data: `get code ${result.code}` });
             this.card.body.push(template);
         })
 
