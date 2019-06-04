@@ -36,7 +36,8 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
         const bingSearchAction = this.createAction({
             title: 'Open in Bing Search',
             url: `https://www.bing.com/search?q=icd10 code ${this.dataSource.code}`,
-            actionType: CardActionType.OpenUrl
+            actionType: CardActionType.OpenUrl,
+            iconUrl: 'https://i.imgur.com/oV6TgTL.png'
         });
         this.card.actions = [];
         this.card.actions.push(bingSearchAction);
