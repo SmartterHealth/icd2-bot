@@ -1,6 +1,6 @@
 import { AdaptiveCardHelperBase, CardActionType } from '../AdaptiveCardHelperBase';
 import { IICD10Code } from '../IICD10Code';
-import { CardFactory } from 'botbuilder';
+import { CardFactory, Attachment } from 'botbuilder';
 import { Assert } from '../../assert';
 import * as path from 'path';
 import { TextBlock } from 'adaptivecards';
@@ -17,20 +17,28 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
         this._dataSource = value;
     }
 
-    public render() {
+    public render(): Attachment {
+        this.renderCore();
+        this.renderBingSearch();
+
+        return CardFactory.adaptiveCard(this.card);
+    }
+
+    private renderCore() {
         let template = AdaptiveCardHelperBase.loadTemplate(path.join(__dirname, './GetCodeTemplate.json'));
-        template.items[0].columns[1].items[0].text = this.dataSource.code
+        template.items[0].columns[1].items[0].text = this.dataSource.code;
         template.items[1].columns[1].items[0].text = this.dataSource.description;
         template.items[2].columns[1].items[0].text = this.dataSource.chapter;
         this.card.body.push(template);
+    }
 
+    private renderBingSearch() {
         const bingSearchAction = this.createAction({
-            title: 'Bing Search',
+            title: 'Open in Bing Search',
             url: `https://www.bing.com/search?q=icd10 code ${this.dataSource.code}`,
             actionType: CardActionType.OpenUrl
-        })
+        });
         this.card.actions = [];
         this.card.actions.push(bingSearchAction);
-        return CardFactory.adaptiveCard(this.card);
     }
 }

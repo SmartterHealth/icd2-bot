@@ -23,10 +23,11 @@ export class SearchCodesBotCommand extends BotCommandBase {
 
         const card = new SearchCodesAdaptiveCardHelper(context);
         card.args = args;
-        card.headerTitle = this.displayName;
+        card.headerTitle = `${settings.bot.displayName} ${this.displayName}`;
         card.headerDescription = `Your search for **${args}** return ${results.codes.length} results.`
+        card.dataSource = results;
         await context.sendActivity({
-            attachments: [card.renderAttachment(results)],
+            attachments: [card.render()],
         });
     }
 }

@@ -22,8 +22,8 @@ export class GetCodeBotCommand extends BotCommandBase {
 
             const card = new GetCodeAdaptiveCardHelper(context);
             card.args = args;
-            card.headerTitle = this.displayName;
-            card.headerDescription = `Test`;
+            card.headerTitle = `${settings.bot.displayName} ${this.displayName}`;
+            card.headerDescription = ``;
             card.dataSource = code;
 
             await context.sendActivity({

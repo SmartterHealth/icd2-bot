@@ -3,6 +3,7 @@ import { BotCommand, BotCommandBase } from '../BotCommand';
 import * as helpSearchCodesCard from './helpSearchCodes.json';
 import { log } from '../../logger';
 import { HelpAdaptiveCardHelper } from './HelpAdaptiveCardHelper';
+import { settings } from '../../settings';
 
 
 const IS_DEFAULT = true;
@@ -17,11 +18,11 @@ export class HelpBotCommand extends BotCommandBase {
 
         const card = new HelpAdaptiveCardHelper(context);
         card.args = args;
-        card.headerTitle = this.displayName;
-        card.headerDescription = "Welcome to ICD2 Bot, User! This bot will assist you with ICD10 codes. Please select an option from below:";
+        card.headerTitle = `${settings.bot.displayName} ${this.displayName}`;
+        card.headerDescription = "Welcome to ICD2 Bot, User! This bot will assist you with ICD10 codes. Please select a help option from below:";
 
         await context.sendActivity({
-            attachments: [card.renderAttachment()],
+            attachments: [card.render()],
         });
 
         return;

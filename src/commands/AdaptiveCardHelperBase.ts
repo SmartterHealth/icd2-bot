@@ -1,4 +1,4 @@
-import { TurnContext } from "botbuilder";
+import { TurnContext, Attachment } from 'botbuilder';
 import { Assert } from "../assert";
 import * as path from 'path';
 import { type } from "os";
@@ -53,13 +53,6 @@ export abstract class AdaptiveCardHelperBase {
         return (this.context != null && this.context.activity.value != null && this.context.activity.value.msteams != undefined)
     }
 
-    protected createAction2(options: ICardAction) {
-        let action: any = Object.assign({}, options);
-        action.type = `Action.${CardActionType[action.type]}`;
-        console.log(action);
-        return type;
-    }
-
     protected createAction(options: ICardAction) {
 
         let action = Object.assign({}, options);
@@ -101,9 +94,12 @@ export abstract class AdaptiveCardHelperBase {
         return action;
     }
 
-    public static loadTemplate(path: string): any {
-        return JSON.parse(JSON.stringify(require(path)));
+    public static loadTemplate(pathToTemplate: string): any {
+        let value = (require(pathToTemplate));
+        return JSON.parse(JSON.stringify(value));
     }
+
+    public abstract render(): Attachment;
 }
 
 export type CardActionTypeName = 'Action.Submit' | 'Action.OpenUrl';

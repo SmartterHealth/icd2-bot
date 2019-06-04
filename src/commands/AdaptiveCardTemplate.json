@@ -13,7 +13,7 @@
                                 {
                                     "type": "Image",
                                     "url": "https://i.imgur.com/YAmuJGY.jpg?1",
-                                    "size": "small"
+                                    "size": "medium"
                                 }
                             ],
                             "width": "auto"
@@ -27,7 +27,8 @@
                                     "text": "[TITLE]"
                                 }
                             ],
-                            "width": "stretch"
+                            "width": "stretch",
+                            "verticalContentAlignment": "center"
                         }
                     ]
                 }

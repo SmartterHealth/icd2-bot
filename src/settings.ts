@@ -9,6 +9,7 @@ const settings = {
         port: process.env.port || process.env.PORT || 3978,
         appId: process.env.MicrosoftAppId,
         appPassword: process.env.MicrosoftAppPassword,
+        displayName: process.env.BotDisplayName || 'ICD2-Bot'
     },
     db: {
         server: process.env.DbServer,
