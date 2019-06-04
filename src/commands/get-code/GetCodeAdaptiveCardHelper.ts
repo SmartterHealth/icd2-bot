@@ -3,7 +3,6 @@ import { IICD10Code } from '../IICD10Code';
 import { CardFactory, Attachment } from 'botbuilder';
 import { Assert } from '../../assert';
 import * as path from 'path';
-import { TextBlock } from 'adaptivecards';
 
 export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
     
