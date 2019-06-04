@@ -1,12 +1,12 @@
 const gulp = require('gulp');
-const  del  = require('del');
+const del = require('del');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const nodemon = require('gulp-nodemon');
 
 function copy() {
     return gulp.src(['./src/**/*.json'])
-    .pipe(gulp.dest('./lib'));
+        .pipe(gulp.dest('./lib'));
 }
 
 function clean() {
@@ -39,9 +39,9 @@ const packageAzureFiles = [
     '**/*.*',
 
     // ... but the following:
-    '!node_modules/**/*.*', 
-    '!src/**/*.*', 
-    '!db/**/*.*', 
+    '!node_modules/**/*.*',
+    '!src/**/*.*',
+    '!db/**/*.*',
     '!icd2-bot.bot',
     '!tsconfig.json',
     '!nodemon.json',
@@ -59,12 +59,10 @@ const packageAzureFiles = [
 
 function package(done) {
     return del('./deployment')
-    .then((value) => {
-        gulp.src(packageAzureFiles)
-    .pipe(gulp.dest('./deployment/package'));
-
-
-    });
+        .then((value) => {
+            gulp.src(packageAzureFiles)
+                .pipe(gulp.dest('./deployment/package'));
+        });
 }
 
 const build = gulp.series(clean, copy, tsc);
