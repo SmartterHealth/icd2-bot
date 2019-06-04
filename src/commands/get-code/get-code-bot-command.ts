@@ -5,7 +5,7 @@ import { log } from '../../logger';
 import { settings } from '../../settings';
 import { BotCommand, BotCommandBase } from '../bot-command';
 import { IICD10Code } from '../IICD10Code';
-import { GetCodeAdaptiveCard } from './get-code-adaptive-card';
+
 
 const IS_DEFAULT = false;
 
@@ -19,12 +19,6 @@ export class GetCodeBotCommand extends BotCommandBase {
 
         if (code) {
             log(`ICD10 code '${args}' found! ${JSON.stringify(code)}.`);
-
-            const card = new GetCodeAdaptiveCard();
-
-            await context.sendActivity({
-            attachments: [card.renderAttachment(code)],
-        });
         }
     }
 }

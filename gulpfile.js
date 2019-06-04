@@ -4,6 +4,11 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const nodemon = require('gulp-nodemon');
 
+function copy() {
+    return gulp.src(['./src/**/*.json'])
+    .pipe(gulp.dest('./lib'));
+}
+
 function clean() {
     return del('./lib');
 }
@@ -61,7 +66,7 @@ function package(done) {
     });
 }
 
-const build = gulp.series(clean, tsc);
+const build = gulp.series(clean, copy, tsc);
 const serve = gulp.series(build, start);
 
-module.exports = { clean, build, serve, tsc, watch, package }
+module.exports = { copy, clean, build, serve, tsc, watch, package }

@@ -5,7 +5,7 @@ import { log } from '../../logger';
 import { settings } from '../../settings';
 import { BotCommand, BotCommandBase } from '../bot-command';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
-import { SearchAdaptiveCard } from './search-adaptive-cards';
+import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
 
 const IS_DEFAULT = false;
 
@@ -21,8 +21,9 @@ export class SearchCodesBotCommand extends BotCommandBase {
 
         log(`${results.codes.length} results returned for query '${query}'`);
 
-        const card = new SearchAdaptiveCard();
-
+        const card = new SearchCodesAdaptiveCardHelper(context);
+        card.headerTitle = this.displayName;
+        card.headerDescription = `Your search for **${args}** return ${results.codes.length} results.`
         await context.sendActivity({
             attachments: [card.renderAttachment(results)],
         });
