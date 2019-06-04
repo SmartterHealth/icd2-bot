@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 import { ActivityHandler, CardFactory, TurnContext } from 'botbuilder';
-import { BotCommandAdapter } from './commands/bot-command-adapter';
-import { GetCodeBotCommand } from './commands/get-code/get-code-bot-command';
-import { HelpBotCommand } from './commands/help/help-bot-command';
-import { SearchCodesBotCommand } from './commands/search-codes/search-bot-command';
+import { BotCommandAdapter } from './commands/BotCommandAdapter';
+import { GetCodeBotCommand } from './commands/get-code/GetCodeBotCommand';
+import { HelpBotCommand } from './commands/help/HelpBotCommand';
+import { SearchCodesBotCommand } from './commands/search-codes/SearchCodesBotCommand';
 import { log } from './logger';
 
 const botCommandAdapter = new BotCommandAdapter([SearchCodesBotCommand, GetCodeBotCommand, HelpBotCommand]);

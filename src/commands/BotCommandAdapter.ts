@@ -1,6 +1,6 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
-import { BotCommand, BotCommandBase } from './bot-command';
+import { BotCommand, BotCommandBase } from './BotCommand';
 
 export class BotCommandAdapter {
 
@@ -36,7 +36,7 @@ export class BotCommandAdapter {
         }
 
         // Execute the command.
-        await cmd.execute(context, args);
+        await cmd.execute(context, (args).trim());
     }
 
     private initCommandTypes(registrations: Array<typeof BotCommandBase>) {

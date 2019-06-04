@@ -18,13 +18,12 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
     public renderAttachment(results: IICD10SearchResults): Attachment {
 
         results.codes.map((result) => {
-            let template = SearchCodesAdaptiveCardHelper.loadTemplate(path.join(__dirname, './searchCodesTemplate.json'));
+            let template = SearchCodesAdaptiveCardHelper.loadTemplate(path.join(__dirname, './SearchCodesTemplate.json'));
             let root = template.items[0];
             root.columns[0].items[0].text = result.code;
             root.columns[1].items[0].text = result.description;
 
-            const getCodeCommand = `get code ${this.args}`;
-            root.selectAction.data = this.submitAction(getCodeCommand);
+            root.selectAction = this.createSubmitAction({title: result.code, data: `get code ${result.code}` });
             this.card.body.push(template);
         })
 

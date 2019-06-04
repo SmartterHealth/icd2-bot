@@ -1,42 +1,6 @@
 {
-    "type": "AdaptiveCard",
+    
     "body": [
-        {
-            "type": "Container",
-            "items": [
-                {
-                    "type": "ColumnSet",
-                    "columns": [
-                        {
-                            "type": "Column",
-                            "verticalContentAlignment": "Center",
-                            "items": [
-                                {
-                                    "type": "Image",
-                                    "style": "person",
-                                    "url": "https://i.imgur.com/YAmuJGY.jpg?1",
-                                    "size": "small"
-                                }
-                            ],
-                            "width": "auto"
-                        },
-                        {
-                            "type": "Column",
-                            "verticalContentAlignment": "Center",
-                            "items": [
-                                {
-                                    "type": "TextBlock",
-                                    "weight": "bolder",
-                                    "text": "help",
-                                    "wrap": true
-                                }
-                            ],
-                            "width": "stretch"
-                        }
-                    ]
-                }
-            ]
-        },
         {
             "type": "Container",
             "items": [
@@ -87,6 +51,4 @@
             }
         }
     ],
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.0"
 }

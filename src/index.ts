@@ -11,7 +11,7 @@ import { settings } from './settings';
 import { BotFrameworkAdapter } from 'botbuilder';
 
 // This bot's main dialog.
-import { ICD2Bot } from './bot';
+import { ICD2Bot } from './icd2bot';
 import { log } from './logger';
 
 // Create HTTP server.

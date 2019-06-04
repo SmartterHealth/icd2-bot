@@ -3,7 +3,7 @@ import * as sql from 'mssql';
 import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
-import { BotCommand, BotCommandBase } from '../bot-command';
+import { BotCommand, BotCommandBase } from '../BotCommand';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
 
@@ -22,6 +22,7 @@ export class SearchCodesBotCommand extends BotCommandBase {
         log(`${results.codes.length} results returned for query '${query}'`);
 
         const card = new SearchCodesAdaptiveCardHelper(context);
+        card.args = args;
         card.headerTitle = this.displayName;
         card.headerDescription = `Your search for **${args}** return ${results.codes.length} results.`
         await context.sendActivity({

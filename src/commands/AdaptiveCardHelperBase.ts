@@ -9,7 +9,7 @@ export abstract class AdaptiveCardHelperBase {
         this.context = context;
     }
 
-    private _card = AdaptiveCardHelperBase.loadTemplate(path.join(__dirname, './template.json'));
+    private _card = AdaptiveCardHelperBase.loadTemplate(path.join(__dirname, './AdaptiveCardTemplate.json'));
 
     protected get card() {
         return this._card;
@@ -52,25 +52,41 @@ export abstract class AdaptiveCardHelperBase {
         return (this.context != null && this.context.activity.value != null && this.context.activity.value.msteams != undefined)
     }
 
-    protected submitAction(value: string, text?: string, displayText?: string) {
+    protected createSubmitAction(options: ICardAction) {
+        let action: any = Object.assign({}, options);
+        action.type = 'Action.Submit';
 
-        let data:any = value;
+        return action;
+    }
+
+    protected submitAction(data: any, text?: string, displayText?: string) {
+
+        let action = {
+            type: 'Action.Submit',
+            text: text,
+            data: data
+        }
 
         if(this.isMSTeams == true) {
-            data = {
+            action.data = {
                 msteams: {
                     "type": "messageBack",
                     "text": text,
                     "displayText": displayText,
-                    "value": value
+                    "value": data
                 }
             }
         }
 
-        return data;
+        return action;
     }
 
     public static loadTemplate(path: string): any {
         return JSON.parse(JSON.stringify(require(path)));
     }
+}
+
+interface ICardAction {
+    title: string,
+    data: any
 }

@@ -3,9 +3,8 @@ import * as sql from 'mssql';
 import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
-import { BotCommand, BotCommandBase } from '../bot-command';
+import { BotCommand, BotCommandBase } from '../BotCommand';
 import { IICD10Code } from '../IICD10Code';
-
 
 const IS_DEFAULT = false;
 
@@ -14,7 +13,7 @@ export class GetCodeBotCommand extends BotCommandBase {
     public async execute(context: TurnContext, args: string) {
         args = (args === undefined || args === null) ? '' : args;
         args = args.trim();
-        log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+        log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
         const code = await getCode(args);
 
         if (code) {
