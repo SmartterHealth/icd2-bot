@@ -50,7 +50,7 @@ export abstract class AdaptiveCardHelperBase {
     }
 
     public get isMSTeams(): boolean {
-        return (this.context != null && this.context.activity.value != null && this.context.activity.value.msteams != undefined)
+        return (this.context != null && this.context.activity.channelId != null && this.context.activity.channelId != undefined && this.context.activity.channelId === 'msteams')
     }
 
     protected createAction(options: ICardAction) {
@@ -62,8 +62,8 @@ export abstract class AdaptiveCardHelperBase {
             action.data = {
                 msteams: {
                     "type": "messageBack",
-                    "text": options.title,
-                    "displayText": options.title,
+                    "text": options.data,
+                    "displayText": options.data,
                     "value": options.data
                 }
             }
