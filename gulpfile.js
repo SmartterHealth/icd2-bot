@@ -65,7 +65,7 @@ function package(done) {
         });
 }
 
-const build = gulp.series(clean, copy, tsc);
+const build = gulp.series(clean, copy, tsc, package);
 const serve = gulp.series(build, start);
 
 module.exports = { copy, clean, build, serve, tsc, watch, package }
