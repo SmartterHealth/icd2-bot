@@ -39,6 +39,7 @@ export class HelpBotCommand extends BotCommandBase {
             case 'get code':
                     card = new GetCodeHelpAdaptiveCardHelper(context);
                     card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> Get Code`;
+                    card.headerDescription = `Getting details for an ICD10 code is easy!`;
                     break;
 
             default:
