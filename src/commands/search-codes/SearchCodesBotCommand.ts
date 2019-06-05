@@ -7,6 +7,9 @@ import { BotCommand, BotCommandBase } from '../BotCommand';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
 
+/**
+ * Simple flag that indicates whether this is the default command.
+ */
 const IS_DEFAULT = false;
 
 @BotCommand('Search Codes', ['search codes', 'sc'], IS_DEFAULT)

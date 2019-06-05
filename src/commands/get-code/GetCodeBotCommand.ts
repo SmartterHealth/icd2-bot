@@ -7,6 +7,9 @@ import { BotCommand, BotCommandBase } from '../BotCommand';
 import { IICD10Code } from '../IICD10Code';
 import { GetCodeAdaptiveCardHelper } from './GetCodeAdaptiveCardHelper';
 
+/**
+ * Simple flag that indicates whether this is the default command.
+ */
 const IS_DEFAULT = false;
 
 @BotCommand('Get Code', ['gc', 'get code', 'code'], IS_DEFAULT)

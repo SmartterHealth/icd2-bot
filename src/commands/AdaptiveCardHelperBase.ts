@@ -10,7 +10,7 @@ export abstract class AdaptiveCardHelperBase {
         this.context = context;
     }
 
-    private _card = AdaptiveCardHelperBase.loadTemplate(path.join(__dirname, './AdaptiveCardTemplate.json'));
+    private _card = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './AdaptiveCardTemplate.json'));
 
     protected get card() {
         return this._card;
@@ -94,7 +94,7 @@ export abstract class AdaptiveCardHelperBase {
         return action;
     }
 
-    public static loadTemplate(pathToTemplate: string): any {
+    public static loadCardElementJSON(pathToTemplate: string): any {
         let value = (require(pathToTemplate));
         return JSON.parse(JSON.stringify(value));
     }

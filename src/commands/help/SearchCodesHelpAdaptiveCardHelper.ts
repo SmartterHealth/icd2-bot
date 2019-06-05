@@ -4,7 +4,7 @@ import * as path from 'path';
 
 export class SearchCodesHelpAdaptiveCardHelper extends AdaptiveCardHelperBase {
     render(): Attachment {
-        let template = AdaptiveCardHelperBase.loadTemplate(path.join(__dirname, './SearchCodesHelpAdaptiveCardHelper.json'));
+        let template = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './SearchCodesHelpAdaptiveCardHelper.json'));
         this.card.body.push(template);
 
         this.card.actions = [];

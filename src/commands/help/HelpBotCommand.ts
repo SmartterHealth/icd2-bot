@@ -7,6 +7,9 @@ import { AdaptiveCardHelperBase } from '../AdaptiveCardHelperBase';
 import { SearchCodesHelpAdaptiveCardHelper } from './SearchCodesHelpAdaptiveCardHelper';
 import { GetCodeHelpAdaptiveCardHelper } from './GetCodeHelpAdaptiveCardHelper';
 
+/**
+ * Simple flag that indicates whether this is the default command.
+ */
 const IS_DEFAULT = true;
 
 @BotCommand('Help', ['help'], IS_DEFAULT)
