@@ -15,6 +15,11 @@ function clean() {
 }
 clean.description = 'Deletes all compiled TypeScript files.';
 
+function docs() {
+    // REQUIRES pandoc!!! https://pandoc.org/MANUAL.html
+    return exec('pandoc -s README.docx -t markdown -o README.md')
+}
+
 function tsc() {
     return exec('tsc');
 }
@@ -70,7 +75,7 @@ function package(done) {
         });
 }
 
-const build = gulp.series(clean, copy, tsc, zip, package);
+const build = gulp.series(clean, copy, docs, tsc, zip, package);
 const serve = gulp.series(build, start);
 
-module.exports = { copy, clean, build, serve, tsc, watch, zip, package }
+module.exports = { copy, clean, build, docs, serve, tsc, watch, zip, package }
