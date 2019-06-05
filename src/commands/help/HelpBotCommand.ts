@@ -10,7 +10,7 @@ import { GetCodeHelpAdaptiveCardHelper } from './GetCodeHelpAdaptiveCardHelper';
 /**
  * Simple flag that indicates whether this is the default command.
  */
-const IS_DEFAULT = true;
+const IS_DEFAULT = false;
 
 @BotCommand('Help', ['help'], IS_DEFAULT)
 export class HelpBotCommand extends BotCommandBase {

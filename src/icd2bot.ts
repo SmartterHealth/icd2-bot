@@ -7,8 +7,9 @@ import { GetCodeBotCommand } from './commands/get-code/GetCodeBotCommand';
 import { HelpBotCommand } from './commands/help/HelpBotCommand';
 import { SearchCodesBotCommand } from './commands/search-codes/SearchCodesBotCommand';
 import { log } from './logger';
+import { WelcomeBotCommand } from './commands/welcome/WelcomeBotCommand';
 
-const botCommandAdapter = new BotCommandAdapter([SearchCodesBotCommand, GetCodeBotCommand, HelpBotCommand]);
+const botCommandAdapter = new BotCommandAdapter([SearchCodesBotCommand, GetCodeBotCommand, HelpBotCommand, WelcomeBotCommand]);
 
 export class ICD2Bot extends ActivityHandler {
     constructor() {
@@ -42,26 +43,17 @@ export class ICD2Bot extends ActivityHandler {
 
     /**
      * Send a welcome message along with suggested actions for the user to click.
-     * @param {TurnContext} turnContext A TurnContext instance containing all the data needed for processing this conversation turn.
+     * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
      */
-    public async sendWelcomeMessage(turnContext) {
-        const { activity } = turnContext;
+    public async sendWelcomeMessage(context) {
+        const { activity } = context;
 
         // Iterate over all new members added to the conversation.
         for (const idx in activity.membersAdded) {
             if (activity.membersAdded[idx].id !== activity.recipient.id) {
                 log(`User '' added to chat session.`);
-                await this.sendWelcomeCard(turnContext);
+                await botCommandAdapter.execute(context, 'weclome');
             }
         }
-    }
-
-    /**
-     * Send suggested actions to the user.
-     * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
-     */
-    public async sendWelcomeCard(context) {
-
-        await context.sendActivity(`Welcome, ${context.activity.from.name}! Enter a command or type *'help'* to begin.`);
     }
 }
