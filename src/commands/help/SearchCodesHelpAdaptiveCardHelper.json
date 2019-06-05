@@ -43,6 +43,11 @@
             "text": "\tsearch codes \"central nervous system\" neoplasm",
             "isSubtle": true,
             "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "**Tip:** Use the alias *sc* in place of the *search codes* command as a shortcut.",
+            "wrap": true
         }
     ]
 }

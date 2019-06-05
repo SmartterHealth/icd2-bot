@@ -12,7 +12,7 @@ import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
  */
 const IS_DEFAULT = false;
 
-@BotCommand('Search Codes', ['search codes', 'sc'], IS_DEFAULT)
+@BotCommand('Search Codes', ['search codes', 'sc', 'search code'], IS_DEFAULT)
 export class SearchCodesBotCommand extends BotCommandBase {
 
     public async execute(context: TurnContext, args: string) {
@@ -26,7 +26,7 @@ export class SearchCodesBotCommand extends BotCommandBase {
 
         const card = new SearchCodesAdaptiveCardHelper(context);
         card.args = args;
-        card.headerTitle = `${settings.bot.displayName} ${this.displayName}`;
+        card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
         card.headerDescription = `Your search for **${args}** return ${results.codes.length} results. ${(results.codes.length > 0) ? " Click on a result for more details." : ""}`;
         card.dataSource = results;
         await context.sendActivity({
