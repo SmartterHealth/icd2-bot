@@ -11,10 +11,9 @@
   "devDependencies": {
     "del": "^4.1.1",
     "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.0",
     "tslint": "^5.16.0",
-    "typescript": "^3.4.5",
-    "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2"
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "botbuilder": "^4.4.0",
