@@ -58,10 +58,10 @@ export class ICD2Bot extends ActivityHandler {
 
     /**
      * Send suggested actions to the user.
-     * @param {TurnContext} turnContext A TurnContext instance containing all the data needed for processing this conversation turn.
+     * @param {TurnContext} context A TurnContext instance containing all the data needed for processing this conversation turn.
      */
-    public async sendWelcomeCard(turnContext) {
+    public async sendWelcomeCard(context) {
 
-        await turnContext.sendActivity('Welcome!');
+        await context.sendActivity(`Welcome, ${context.activity.from.name}! Enter a command or type *'help'* to begin.`);
     }
 }

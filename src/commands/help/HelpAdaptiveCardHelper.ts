@@ -9,9 +9,6 @@ export class HelpAdaptiveCardHelper extends AdaptiveCardHelperBase {
         this.card.actions = [];
         this.card.actions.push(this.createAction({ title: 'Search Codes by Keyword(s)', actionType: CardActionType.Submit, data: 'help search codes'}));
         this.card.actions.push(this.createAction({ title: 'Get Code Details', actionType: CardActionType.Submit, data: 'help get code'}));
-        this.card.actions.push(this.createAction({ title: 'Help', actionType: CardActionType.Submit, data: 'help'}));
-
-        console.log(this.card);
 
         return CardFactory.adaptiveCard(this.card);
     }

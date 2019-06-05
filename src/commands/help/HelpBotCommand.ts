@@ -1,10 +1,11 @@
-import { CardFactory, TurnContext } from 'botbuilder';
+import { TurnContext } from 'botbuilder';
 import { BotCommand, BotCommandBase } from '../BotCommand';
-import * as helpSearchCodesCard from './helpSearchCodes.json';
 import { log } from '../../logger';
 import { HelpAdaptiveCardHelper } from './HelpAdaptiveCardHelper';
 import { settings } from '../../settings';
-
+import { AdaptiveCardHelperBase } from '../AdaptiveCardHelperBase';
+import { SearchCodesHelpAdaptiveCardHelper } from './SearchCodesHelpAdaptiveCardHelper';
+import { GetCodeHelpAdaptiveCardHelper } from './GetCodeHelpAdaptiveCardHelper';
 
 const IS_DEFAULT = true;
 
@@ -16,28 +17,35 @@ export class HelpBotCommand extends BotCommandBase {
 
         log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
 
-        const card = new HelpAdaptiveCardHelper(context);
-        card.args = args;
-        card.headerTitle = `${settings.bot.displayName} ${this.displayName}`;
-        card.headerDescription = "Welcome to ICD2 Bot, User! This bot will assist you with ICD10 codes. Please select a help option from below:";
+        const card = this.determineCardHelper(args, context);
 
         await context.sendActivity({
             attachments: [card.render()],
         });
+    }
 
-        return;
-
-        switch (args.trim()) {
+    private determineCardHelper(args: string, context: TurnContext): AdaptiveCardHelperBase {
+        let card: AdaptiveCardHelperBase;
+        switch(args.toLowerCase()) {
             case 'search codes':
-                    await context.sendActivity({
-                        attachments: [CardFactory.adaptiveCard(card)],
-                    });
+                card = new SearchCodesHelpAdaptiveCardHelper(context);
+                card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> Search Codes`;
+                card.headerDescription = `Searching for ICD10 codes by keyword is easy!`;
+                break;
+
+            case 'get code':
+                    card = new GetCodeHelpAdaptiveCardHelper(context);
+                    card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> Get Code`;
                     break;
 
-                    default:
-                            await context.sendActivity({
-                                attachments: [CardFactory.adaptiveCard(card)],
-                            });
+            default:
+                card = new HelpAdaptiveCardHelper(context);
+                card.headerTitle = `${settings.bot.displayName} -> ${this.displayName}`;
+                card.headerDescription = `Welcome to ICD2 Bot, ${context.activity.from.name}! This bot will assist you with ICD10 codes. Please select an option below. You can return to this screen at any time by typing **help**.`;
+                break;
         }
+
+        card.args = args;
+        return card;
     }
 }
