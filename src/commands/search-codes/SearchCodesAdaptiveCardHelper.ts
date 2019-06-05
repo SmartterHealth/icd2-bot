@@ -24,7 +24,7 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
 
     private renderSearchResults() {
         this.dataSource.codes.map((result) => {
-            let template = SearchCodesAdaptiveCardHelper.loadTemplate(path.join(__dirname, './SearchCodesTemplate.json'));
+            let template = SearchCodesAdaptiveCardHelper.loadTemplate(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
             let root = template.items[0];
             root.columns[0].items[0].text = result.code;
             root.columns[1].items[0].text = result.description;
