@@ -1,6 +1,6 @@
 # ICD2 - HLS Central West ICD10 Bot
 
-![alt text](ICD296x96.png "ICD2 Bot!") 
+![alt text](image1.png "ICD2 Bot!") 
 
 # Components
 
