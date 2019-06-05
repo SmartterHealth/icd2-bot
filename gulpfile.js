@@ -64,7 +64,9 @@ const packageAzureFiles = [
     '!package/**/*.*',
     '!web.config.old',
     '!webpack.config.js',
-    '!tslint.json'
+    '!tslint.json',
+    '!./**/*.docx',
+    '!./**/*.png'
 ]
 
 function package(done) {
