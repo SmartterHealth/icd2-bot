@@ -30,9 +30,13 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
 
         // Load the JSON template, and set code, description, and chapter.
         let template = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './GetCodeAdaptiveCardHelper.json'));
-        template.items[0].columns[1].items[0].text = this.dataSource.code;
-        template.items[1].columns[1].items[0].text = this.dataSource.description;
-        template.items[2].columns[1].items[0].text = this.dataSource.chapter;
+        if(this.dataSource != null) {
+            template.items[0].columns[1].items[0].text = this.dataSource.code;
+            template.items[1].columns[1].items[0].text = this.dataSource.description;
+            template.items[2].columns[1].items[0].text = this.dataSource.chapter;
+        } else {
+            template.items = null;
+        }
 
         // Append to the card's body.
         this.card.body.push(template);
@@ -43,6 +47,7 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
      */
     private renderBingSearch() {
 
+        if(this.dataSource != null) {
         // Create the action button.
         const bingSearchAction = this.createAction({
             title: 'Open in Bing Search',
@@ -54,5 +59,6 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
         // Create the actions array and and the action button.
         this.card.actions = [];
         this.card.actions.push(bingSearchAction);
+    }
     }
 }

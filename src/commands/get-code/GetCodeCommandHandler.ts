@@ -32,6 +32,15 @@ export class GetCodeCommandHandler extends CommandHandlerBase {
             await context.sendActivity({
                 attachments: [card.render()],
             });
+        } else {
+            const card = new GetCodeAdaptiveCardHelper(context);
+            card.args = args;
+            card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
+            card.headerDescription = `A code for '${args}' was not found. Please try again.`;
+
+            await context.sendActivity({
+                attachments: [card.render()],
+            });
         }
     }
 }
