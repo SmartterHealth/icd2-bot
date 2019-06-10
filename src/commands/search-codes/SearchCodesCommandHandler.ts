@@ -27,7 +27,7 @@ export class SearchCodesCommandHandler extends CommandHandlerBase {
         const card = new SearchCodesAdaptiveCardHelper(context);
         card.args = args;
         card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
-        card.headerDescription = `Your search for **${args}** return ${results.codes.length} results. ${(results.codes.length > 0) ? " Click on a result for more details." : ""}`;
+        card.headerDescription = `Your search for **${args}** returned ${results.codes.length} results. ${(results.codes.length > 0) ? " Click on a result for more details." : ""}`;
         card.dataSource = results;
         await context.sendActivity({
             attachments: [card.render()],
