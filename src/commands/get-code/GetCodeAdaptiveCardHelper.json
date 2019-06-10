@@ -78,6 +78,32 @@
 					"width": "stretch"
 				}
 			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"weight": "bolder",
+							"text": "Is Billable?"
+						}
+					],
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "[BILLABLE]"
+						}
+					],
+					"width": "stretch"
+				}
+			]
 		}
 	]
 }

@@ -34,6 +34,7 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
             template.items[0].columns[1].items[0].text = this.dataSource.code;
             template.items[1].columns[1].items[0].text = this.dataSource.description;
             template.items[2].columns[1].items[0].text = this.dataSource.chapter;
+            template.items[3].columns[1].items[0].text = (this.dataSource.hipaa) ? 'yes' : 'no';
         } else {
             template.items = null;
         }

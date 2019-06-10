@@ -12,7 +12,7 @@ export interface IICD10Code {
     chapter: string;
 
     /** Flag that indicates whther or not the code is billable.*/
-    isBillable: boolean;
+    hipaa: boolean;
 }
 /** Interface that defines the result of searching for ICD10 codes. */
 export interface IICD10SearchResults {
