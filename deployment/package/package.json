@@ -16,6 +16,7 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
+    "applicationinsights": "^1.4.0",
     "botbuilder": "^4.4.0",
     "chalk": "^2.4.2",
     "dotenv": "^8.0.0",
