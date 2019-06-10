@@ -5,17 +5,6 @@ import { config } from 'dotenv';
 import * as path from 'path';
 import * as restify from 'restify';
 import { settings } from './settings';
-import * as appInsights from 'applicationinsights';
-
-appInsights.setup()
-    .setAutoDependencyCorrelation(true)
-    .setAutoCollectRequests(true)
-    .setAutoCollectPerformance(true)
-    .setAutoCollectExceptions(true)
-    .setAutoCollectDependencies(true)
-    .setAutoCollectConsole(true)
-    .setUseDiskRetryCaching(true)
-    .start();
 
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.

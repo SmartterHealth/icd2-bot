@@ -4,6 +4,13 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const nodemon = require('gulp-nodemon');
 const ziplib = require('gulp-zip');
+var bump = require('gulp-bump');
+
+function patchVersion(done) {
+    return gulp.src('./package.json')
+        .pipe(bump())
+        .pipe(gulp.dest('./'));
+}
 
 function copy() {
     return gulp.src(['./src/**/*.json'])
@@ -31,8 +38,8 @@ const watch = (done) => {
 
 function zip() {
     return gulp.src('./deployment/package/**/*.*')
-    .pipe(ziplib( 'icd2-bot.zip', { compress: true }))
-    .pipe(gulp.dest('./deployment'));
+        .pipe(ziplib('icd2-bot.zip', { compress: true }))
+        .pipe(gulp.dest('./deployment'));
 }
 
 function start(done) {
@@ -77,7 +84,7 @@ function package(done) {
         });
 }
 
-const build = gulp.series(clean, copy, docs, tsc, zip, package);
+const build = gulp.series(clean, copy, docs, tsc, patchVersion, zip, package);
 const serve = gulp.series(build, start);
 
-module.exports = { copy, clean, build, docs, serve, tsc, watch, zip, package }
+module.exports = { copy, clean, build, docs, serve, increment: patchVersion, tsc, watch, zip, package }

@@ -8,6 +8,17 @@ import { HelpCommandHandler } from './commands/help/HelpCommandHandler';
 import { SearchCodesCommandHandler } from './commands/search-codes/SearchCodesCommandHandler';
 import { log } from './logger';
 import { WelcomeCommandHandler } from './commands/welcome/WelcomeCommandHandler';
+import * as appInsights from 'applicationinsights';
+
+appInsights.setup()
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true)
+    .setUseDiskRetryCaching(true)
+    .start();
 
 // Create command adapter instance and register known command handlers.
 const botCommandAdapter = new CommandHandlerAdapter([
@@ -40,6 +51,8 @@ export class ICD2Bot extends ActivityHandler {
                 if ((!commandText) && context.activity.value && context.activity.value.msteams) {
                     commandText = context.activity.value.msteams.text;
                 }
+                
+                this.setUserId(context);
 
                 // Execute the command via the command adapter, which will dispatch to the appropriate command handler.
                 await botCommandAdapter.execute(context, commandText.trim());
@@ -50,6 +63,12 @@ export class ICD2Bot extends ActivityHandler {
                 await next();
             }
         });
+    }
+
+    private setUserId(context: TurnContext) {
+        appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAuthUserId] = context.activity.from.id;
+        appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAccountId] = context.activity.from.id;
+        appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userId] = context.activity.from.name;
     }
 
     /**
@@ -63,6 +82,7 @@ export class ICD2Bot extends ActivityHandler {
         for (const idx in activity.membersAdded) {
             if (activity.membersAdded[idx].id !== activity.recipient.id) {
                 log(`User ${context.activity.from.name} added to chat session.`);
+                this.setUserId(context);
                 await botCommandAdapter.execute(context, 'welcome');
             }
         }
