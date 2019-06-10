@@ -1,17 +1,17 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
-import { BotCommand, BotCommandBase } from './BotCommand';
+import { Command, CommandHandlerBase } from './CommandHandlerBase';
 
-export class BotCommandAdapter {
+export class CommandHandlerAdapter {
 
     /** Private field that stores a list of all known command handler types. */
-    private _commandTypes: Array<typeof BotCommandBase> = [];
+    private _commandTypes: Array<typeof CommandHandlerBase> = [];
     private _possibleCommands: string[] = [];
     private _commandTextParser: string = '';
     /** Private field that stores a mapping of command text to the associated command handler. */
     private _commandMapping = {};
 
-    constructor(commandTypes: Array<typeof BotCommandBase>) {
+    constructor(commandTypes: Array<typeof CommandHandlerBase>) {
 
         this.initCommandTypes(commandTypes);
 
@@ -22,7 +22,7 @@ export class BotCommandAdapter {
     public async execute(context: TurnContext, commandText: string) {
         const re = new RegExp(this._commandTextParser, 'gim');
         const matches = re.exec(commandText);
-        let cmd: BotCommandBase;
+        let cmd: CommandHandlerBase;
         let args: string;
 
         if (!matches || matches.length < 3) {
@@ -41,7 +41,7 @@ export class BotCommandAdapter {
         await cmd.execute(context, (args).trim());
     }
 
-    private initCommandTypes(registrations: Array<typeof BotCommandBase>) {
+    private initCommandTypes(registrations: Array<typeof CommandHandlerBase>) {
         this._commandTypes = registrations;
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this._commandTypes.length; i++) {
@@ -65,7 +65,7 @@ export class BotCommandAdapter {
             * help             HelpBotCommand
             * welcome          WelcomeBotCommand
              */
-            const instance: BotCommandBase = (BotCommandBase.createInstance(registration));
+            const instance: CommandHandlerBase = (CommandHandlerBase.createInstance(registration));
             commands.map((command) => {
                 this._commandMapping[command] = instance;
             });

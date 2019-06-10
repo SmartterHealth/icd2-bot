@@ -7,7 +7,7 @@ import 'reflect-metadata';
  * @param commands A list of aliases for the command.
  * @param isDefault A flag that indicates whether the command is the default command.
  */
-export function BotCommand(displayName: string, commands: string[], isDefault = false ): ClassDecorator {
+export function Command(displayName: string, commands: string[], isDefault = false ): ClassDecorator {
 
     // tslint:disable-next-line:ban-types
     return (target: (Function)) => {
@@ -21,7 +21,7 @@ export function BotCommand(displayName: string, commands: string[], isDefault = 
 /**
  * Base class that implements shared command handler properties and behavior.
  */
-export abstract class BotCommandBase {
+export abstract class CommandHandlerBase {
 
     /** Gets the friendly name for the command. */
     public get displayName(): string {
@@ -45,7 +45,7 @@ export abstract class BotCommandBase {
      * Factory method that creates a new command based on the type argument.
      * @param type The type of command to create.
      */
-    public static createInstance(type: typeof BotCommandBase): BotCommandBase {
+    public static createInstance(type: typeof CommandHandlerBase): CommandHandlerBase {
         const instance = Object.create(type.prototype);
         return instance;
     }

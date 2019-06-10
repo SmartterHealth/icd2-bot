@@ -1,5 +1,5 @@
 import { TurnContext } from 'botbuilder';
-import { BotCommand, BotCommandBase } from '../BotCommand';
+import { Command, CommandHandlerBase } from '../CommandHandlerBase';
 import { log } from '../../logger';
 import { WelcomeAdaptiveCardHelper } from './WelcomeAdaptiveCardHelper';
 import { settings } from '../../settings';
@@ -12,8 +12,8 @@ const IS_DEFAULT = true;
 /**
  * 
  */
-@BotCommand('Welcome', ['w', 'welcome'], IS_DEFAULT)
-export class WelcomeBotCommand extends BotCommandBase {
+@Command('Welcome', ['w', 'welcome'], IS_DEFAULT)
+export class WelcomeCommandHandler extends CommandHandlerBase {
 
     /**
      * 

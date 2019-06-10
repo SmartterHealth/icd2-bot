@@ -3,7 +3,7 @@ import * as sql from 'mssql';
 import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
-import { BotCommand, BotCommandBase } from '../BotCommand';
+import { Command, CommandHandlerBase } from '../CommandHandlerBase';
 import { IICD10Code } from '../IICD10Code';
 import { GetCodeAdaptiveCardHelper } from './GetCodeAdaptiveCardHelper';
 
@@ -12,8 +12,8 @@ import { GetCodeAdaptiveCardHelper } from './GetCodeAdaptiveCardHelper';
  */
 const IS_DEFAULT = false;
 
-@BotCommand('Get Code', ['gc', 'get code', 'code'], IS_DEFAULT)
-export class GetCodeBotCommand extends BotCommandBase {
+@Command('Get Code', ['gc', 'get code', 'code'], IS_DEFAULT)
+export class GetCodeCommandHandler extends CommandHandlerBase {
     public async execute(context: TurnContext, args: string) {
         args = (args === undefined || args === null) ? '' : args;
         args = args.trim();

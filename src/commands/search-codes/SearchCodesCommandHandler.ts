@@ -3,7 +3,7 @@ import * as sql from 'mssql';
 import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
-import { BotCommand, BotCommandBase } from '../BotCommand';
+import { Command, CommandHandlerBase } from '../CommandHandlerBase';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
 
@@ -12,8 +12,8 @@ import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
  */
 const IS_DEFAULT = false;
 
-@BotCommand('Search Codes', ['search codes', 'sc', 'search code'], IS_DEFAULT)
-export class SearchCodesBotCommand extends BotCommandBase {
+@Command('Search Codes', ['search codes', 'sc', 'search code'], IS_DEFAULT)
+export class SearchCodesCommandHandler extends CommandHandlerBase {
 
     public async execute(context: TurnContext, args: string) {
         log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);

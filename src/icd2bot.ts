@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 
 import { ActivityHandler, CardFactory, TurnContext } from 'botbuilder';
-import { BotCommandAdapter } from './commands/BotCommandAdapter';
-import { GetCodeBotCommand } from './commands/get-code/GetCodeBotCommand';
-import { HelpBotCommand } from './commands/help/HelpBotCommand';
-import { SearchCodesBotCommand } from './commands/search-codes/SearchCodesBotCommand';
+import { CommandHandlerAdapter } from './commands/CommandHandlerAdapter';
+import { GetCodeCommandHandler } from './commands/get-code/GetCodeCommandHandler';
+import { HelpCommandHandler } from './commands/help/HelpCommandHandler';
+import { SearchCodesCommandHandler } from './commands/search-codes/SearchCodesCommandHandler';
 import { log } from './logger';
-import { WelcomeBotCommand } from './commands/welcome/WelcomeBotCommand';
+import { WelcomeCommandHandler } from './commands/welcome/WelcomeCommandHandler';
 
 // Create command adapter instance and register known command handlers.
-const botCommandAdapter = new BotCommandAdapter([
-    SearchCodesBotCommand,
-    GetCodeBotCommand,
-    HelpBotCommand,
-    WelcomeBotCommand
+const botCommandAdapter = new CommandHandlerAdapter([
+    SearchCodesCommandHandler,
+    GetCodeCommandHandler,
+    HelpCommandHandler,
+    WelcomeCommandHandler
 ]);
 
 /**

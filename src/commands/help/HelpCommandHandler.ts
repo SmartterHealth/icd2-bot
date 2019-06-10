@@ -1,5 +1,5 @@
 import { TurnContext } from 'botbuilder';
-import { BotCommand, BotCommandBase } from '../BotCommand';
+import { Command, CommandHandlerBase } from '../CommandHandlerBase';
 import { log } from '../../logger';
 import { HelpAdaptiveCardHelper } from './HelpAdaptiveCardHelper';
 import { settings } from '../../settings';
@@ -12,8 +12,8 @@ import { GetCodeHelpAdaptiveCardHelper } from './GetCodeHelpAdaptiveCardHelper';
  */
 const IS_DEFAULT = false;
 
-@BotCommand('Help', ['help'], IS_DEFAULT)
-export class HelpBotCommand extends BotCommandBase {
+@Command('Help', ['help'], IS_DEFAULT)
+export class HelpCommandHandler extends CommandHandlerBase {
 
     public async execute(context: TurnContext, args: string) {
         args = (args === undefined || args === null) ? '' : args;
