@@ -6,16 +6,18 @@ import { settings } from '../../settings';
 import { AdaptiveCardHelperBase } from '../AdaptiveCardHelperBase';
 import { SearchCodesHelpAdaptiveCardHelper } from './SearchCodesHelpAdaptiveCardHelper';
 import { GetCodeHelpAdaptiveCardHelper } from './GetCodeHelpAdaptiveCardHelper';
+import * as appInsights from 'applicationinsights';
 
 /**
  * Simple flag that indicates whether this is the default command.
  */
 const IS_DEFAULT = false;
-
 @Command('Help', ['help'], IS_DEFAULT)
 export class HelpCommandHandler extends CommandHandlerBase {
 
     public async execute(context: TurnContext, args: string) {
+        let client = appInsights.defaultClient;
+
         args = (args === undefined || args === null) ? '' : args;
 
         log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);

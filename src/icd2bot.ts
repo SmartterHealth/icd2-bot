@@ -83,7 +83,7 @@ export class ICD2Bot extends ActivityHandler {
             if (activity.membersAdded[idx].id !== activity.recipient.id) {
                 log(`User ${context.activity.from.name} added to chat session.`);
                 this.setUserId(context);
-                await botCommandAdapter.execute(context, 'welcome');
+                await botCommandAdapter.execute(context, '');
             }
         }
     }

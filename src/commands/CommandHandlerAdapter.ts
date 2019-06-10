@@ -1,6 +1,7 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
 import { Command, CommandHandlerBase } from './CommandHandlerBase';
+import * as appInsights from 'applicationinsights';
 
 export class CommandHandlerAdapter {
 
@@ -24,18 +25,32 @@ export class CommandHandlerAdapter {
         const matches = re.exec(commandText);
         let cmd: CommandHandlerBase;
         let args: string;
+        let commandAlias: string = '';
 
         if (!matches || matches.length < 3) {
             // We didn't find any commands that matches the commandText input, so use the default.
             // tslint:disable-next-line:no-string-literal
             cmd = this._commandMapping['default'];
+            commandAlias = cmd.commands[0];
             args = '';
         } else {
             // We found a match, so grab the commandText and the arguments
-            const newCommandText = matches[1];
+            commandAlias = matches[1].trim();
             args = matches[2];
-            cmd = this._commandMapping[newCommandText];
+            cmd = this._commandMapping[commandAlias];
         }
+
+        // Custom event tracking in Azure AppInsights.
+        let client = appInsights.defaultClient;
+
+        client.trackEvent( {
+            'name': `ICD2 Command`,
+            properties: {
+                commandText: commandAlias,
+                commandName: cmd.displayName,
+                args: args
+            }
+        })
 
         // Execute the command.
         await cmd.execute(context, (args).trim());
