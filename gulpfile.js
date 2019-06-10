@@ -13,7 +13,7 @@ function copy() {
 function clean() {
     return del('./lib');
 }
-clean.description = 'Deletes all compiled TypeScript files.';
+clean.description = 'Cleans all compiled TypeScript files.';
 
 function docs() {
     // REQUIRES pandoc!!! https://pandoc.org/MANUAL.html

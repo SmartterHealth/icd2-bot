@@ -4,9 +4,11 @@ import { BotCommand, BotCommandBase } from './BotCommand';
 
 export class BotCommandAdapter {
 
+    /** Private field that stores a list of all known command handler types. */
     private _commandTypes: Array<typeof BotCommandBase> = [];
     private _possibleCommands: string[] = [];
     private _commandTextParser: string = '';
+    /** Private field that stores a mapping of command text to the associated command handler. */
     private _commandMapping = {};
 
     constructor(commandTypes: Array<typeof BotCommandBase>) {
@@ -43,14 +45,32 @@ export class BotCommandAdapter {
         this._commandTypes = registrations;
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this._commandTypes.length; i++) {
+            // Grab the command handler type from our registration list.
             const registration = this._commandTypes[i];
+
+            // Grab command handler metadata
             const displayName = Reflect.getMetadata('displayName', registration);
             const isDefault = Reflect.getMetadata('isDefault', registration);
             const commands = Reflect.getMetadata('commands', registration);
+
+            /** Create an instance of our command handler, and map each command text to that instance
+            * This mapping will look something like this in memory:
+            * -----------------------------------------
+            * Command Text     Command Handler Instance
+            * -----------------------------------------
+            * search codes     SearchCodesBotCommand
+            * sc               SearchCodesBotCommand
+            * get codes        GetCodeBotCommand
+            * gc               GetCodeBotCommand
+            * help             HelpBotCommand
+            * welcome          WelcomeBotCommand
+             */
             const instance: BotCommandBase = (BotCommandBase.createInstance(registration));
             commands.map((command) => {
                 this._commandMapping[command] = instance;
             });
+
+            // Register the default command
             if (isDefault) {
                 if (instance != null) {
                 // tslint:disable-next-line:no-string-literal

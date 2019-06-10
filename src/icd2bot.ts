@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) SmartterHealth. All rights reserved.
 // Licensed under the MIT License.
 
 import { ActivityHandler, CardFactory, TurnContext } from 'botbuilder';
@@ -9,8 +9,17 @@ import { SearchCodesBotCommand } from './commands/search-codes/SearchCodesBotCom
 import { log } from './logger';
 import { WelcomeBotCommand } from './commands/welcome/WelcomeBotCommand';
 
-const botCommandAdapter = new BotCommandAdapter([SearchCodesBotCommand, GetCodeBotCommand, HelpBotCommand, WelcomeBotCommand]);
+// Create command adapter instance and register known command handlers.
+const botCommandAdapter = new BotCommandAdapter([
+    SearchCodesBotCommand,
+    GetCodeBotCommand,
+    HelpBotCommand,
+    WelcomeBotCommand
+]);
 
+/**
+ * The main bot handler.
+ */
 export class ICD2Bot extends ActivityHandler {
     constructor() {
         super();
@@ -27,10 +36,12 @@ export class ICD2Bot extends ActivityHandler {
             try {
                 let commandText = context.activity.text;
 
+                // MS Teams sends SubmitActions differently then other chat clients :-/
                 if ((!commandText) && context.activity.value && context.activity.value.msteams) {
                     commandText = context.activity.value.msteams.text;
                 }
 
+                // Execute the command via the command adapter, which will dispatch to the appropriate command handler.
                 await botCommandAdapter.execute(context, commandText.trim());
             } catch (err) {
                 console.log(err);
@@ -51,8 +62,8 @@ export class ICD2Bot extends ActivityHandler {
         // Iterate over all new members added to the conversation.
         for (const idx in activity.membersAdded) {
             if (activity.membersAdded[idx].id !== activity.recipient.id) {
-                log(`User '' added to chat session.`);
-                await botCommandAdapter.execute(context, 'weclome');
+                log(`User ${context.activity.from.name} added to chat session.`);
+                await botCommandAdapter.execute(context, 'welcome');
             }
         }
     }
