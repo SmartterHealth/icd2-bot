@@ -1,9 +1,16 @@
 import * as chalk from 'chalk';
-import { JsonWebTokenError } from 'jsonwebtoken';
+import { settings } from './settings';
 
-const prefix = chalk.default.white('[') + chalk.default.gray('ICD2') + chalk.default.white(']');
+/**
+ * The prefix for messages logged to console. Pulls value from ENV and decorates with colored brackets. Useful for distinguishing custom logs from the bot framework output.
+ */
+const prefix = chalk.default.white('[') + chalk.default.gray(settings.bot.displayName) + chalk.default.white(']');
 
-export function log(message: any) {
+/**
+ * Simple message logging function.
+ * @param message The message to log.
+ */
+export function log(message: string | object) {
     if (typeof message === 'object') { message = JSON.stringify(message); }
     console.log(`${prefix} ${message}`);
 }

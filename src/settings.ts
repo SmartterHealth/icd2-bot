@@ -6,7 +6,7 @@ import * as util from './util';
 dotenv.config();
 
 /**
- * Simple struct that exposes our configuration settings from ENV.
+ * Simple struct that exposes configuration settings from ENV.
  */
 const settings = {
     /** Exposes bot settings from ENV.  */
