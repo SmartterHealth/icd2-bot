@@ -15,11 +15,13 @@ export function convertToBoolean(value: string | undefined, defaultValue: boolea
 export function convertToInteger(value: string | undefined, defaultValue: number = 0) {
     let newValue = defaultValue;
 
-    try {
-        // tslint:disable-next-line:radix
-        newValue = parseInt('' + value);
-    } catch (err) {
-        newValue = defaultValue;
+    if (value !== undefined && value !== null) {
+        try {
+            // tslint:disable-next-line:radix
+            newValue = parseInt('' + value);
+        } catch (err) {
+            newValue = defaultValue;
+        }
     }
 
     return newValue;

@@ -15,7 +15,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "weight": "Bolder",
+                            "weight": "bolder",
                             "text": "[CODE]"
                         }
                     ],
@@ -26,7 +26,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "weight": "Bolder",
+                            "weight": "default",
                             "text": "[DESCRIPTION]",
                             "wrap": true
                         }
