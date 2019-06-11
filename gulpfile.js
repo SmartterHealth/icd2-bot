@@ -5,10 +5,12 @@ const exec = util.promisify(require('child_process').exec);
 const nodemon = require('gulp-nodemon');
 const ziplib = require('gulp-zip');
 var bump = require('gulp-bump');
+var argv = require('yargs').argv;
+var gulpif = require('gulp-if');
 
 function patchVersion(done) {
     return gulp.src('./package.json')
-        .pipe(bump())
+        .pipe(gulpif(!argv.nobump, bump()))
         .pipe(gulp.dest('./'));
 }
 
