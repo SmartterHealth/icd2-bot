@@ -84,7 +84,6 @@ async function searchCodes(query: string): Promise<IICD10SearchResults> {
     const pool = await sql.connect(settings.db);
 
     try {
-        log(settings.searchCodes);
         const dbresults = await pool.request()
             .input('keywords', sql.VarChar(150), query)
             .input('maxrows', sql.Int, settings.searchCodes.maxRows)

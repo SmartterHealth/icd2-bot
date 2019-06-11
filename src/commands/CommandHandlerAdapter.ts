@@ -37,7 +37,7 @@ export class CommandHandlerAdapter {
             // We found a match, so grab the commandText and the arguments
             commandAlias = matches[1].trim();
             args = matches[2];
-            cmd = this._commandMapping[commandAlias];
+            cmd = this._commandMapping[commandAlias.toLowerCase().trim()];
         }
 
         // Execute the command.
