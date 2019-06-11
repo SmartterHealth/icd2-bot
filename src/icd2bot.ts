@@ -51,7 +51,7 @@ export class ICD2Bot extends ActivityHandler {
                 if ((!commandText) && context.activity.value && context.activity.value.msteams) {
                     commandText = context.activity.value.msteams.text;
                 }
-                
+
                 this.setUserId(context);
 
                 // Execute the command via the command adapter, which will dispatch to the appropriate command handler.
@@ -65,6 +65,7 @@ export class ICD2Bot extends ActivityHandler {
         });
     }
 
+    /** Sets the user ID for the current user. */
     private setUserId(context: TurnContext) {
         appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAuthUserId] = context.activity.from.id;
         appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.userAccountId] = context.activity.from.id;
