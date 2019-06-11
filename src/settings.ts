@@ -1,14 +1,14 @@
 import * as dotenv from 'dotenv';
 import * as process from 'process';
-import { isBoolean } from 'util';
 
+/** Initialize and read values from ENV. */
 dotenv.config();
 
-function convertToBoolean(value: string | undefined, defaultValue: boolean = false): boolean {
-    return  (value !== undefined && value !== null && (value.toLowerCase() === 'true' || value == '1'));
-}
-
+/**
+ * Simple struct that exposes our configuration settings from ENV.
+ */
 const settings = {
+    /** Exposes bot settings from ENV.  */
     bot: {
         // tslint:disable-next-line:radix
         port: process.env.port || process.env.PORT || 3978,
@@ -16,6 +16,7 @@ const settings = {
         appPassword: process.env.MicrosoftAppPassword,
         displayName: process.env.BotDisplayName || 'ICD2-Bot'
     },
+    /** Exposes database settings from ENV. */
     db: {
         server: process.env.DbServer,
         database: process.env.DbName,
@@ -25,28 +26,42 @@ const settings = {
             "encrypt": true,
         },
     },
+    /** Exposes code search settings from ENV. */
     searchCodes: {
-        maxRows: checkInt(process.env.SC_MAXROWS, 25),
+        maxRows: convertToInteger(process.env.SC_MAXROWS, 25),
     },
+    /** Exposes Azure Application Insights settings from ENV. */
     appInsights: {
         instrumentationKey: process.env.INSTRUMENTATIONKEY,
         disabled: convertToBoolean(process.env.APPINSIGHTS_DISABLED)
     }
 };
 
-function checkInt(value, defaultValue) {
-    if (value === undefined || value === null) {
-        value = defaultValue;
-    }
+/**
+ * Converts the value to a boolean.
+ * @param value The value to convert.
+ * @param defaultValue The default value if the value cannot be coerced to a boolean.
+ */
+function convertToBoolean(value: string | undefined, defaultValue: boolean = false): boolean {
+    return  (value !== undefined && value !== null && (value.toLowerCase() === 'true' || value == '1'));
+}
+
+/**
+ * Converts the value to an integer.
+ * @param value The value to convert.
+ * @param defaultValue The default value if the value cannot be coerced to an integer.
+ */
+function convertToInteger(value: string | undefined, defaultValue: number = 0) {
+    let newValue = defaultValue;
 
     try {
         // tslint:disable-next-line:radix
-        value = parseInt(value);
+        newValue = parseInt('' + value);
     } catch (err) {
-        value = defaultValue;
+        newValue = defaultValue;
     }
 
-    return value;
+    return newValue;
 }
 
 export { settings };
