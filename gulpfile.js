@@ -109,15 +109,13 @@ const packageAzureFiles = [
  * Copies all *.js files into the ./deployment folder.
   */
 const package = function() {
-    return del('./deployment')
-        .then((value) => {
-            gulp.src(packageAzureFiles)
+    return gulp.src(packageAzureFiles)
                 .pipe(gulp.dest('./deployment/package'));
-        });
+
 }
 package.description = 'Copies all *.js files into the ./deployment folder.'
 
-const build = gulp.series(clean, copy, docs, tsc, patch, zip, package);
+const build = gulp.series(clean, copy, docs, tsc, patch, package, zip);
 build.description = 'Performs the entire build process.'
 
 const serve = gulp.series(build, start);
