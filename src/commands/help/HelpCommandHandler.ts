@@ -1,5 +1,5 @@
 import { TurnContext } from 'botbuilder';
-import { Command, CommandHandlerBase } from '../CommandHandlerBase';
+import { Command, CommandHandlerBase, Traceable, ICommandResults, CommandStatus } from '../CommandHandlerBase';
 import { log } from '../../logger';
 import { HelpAdaptiveCardHelper } from './HelpAdaptiveCardHelper';
 import { settings } from '../../settings';
@@ -15,18 +15,19 @@ const IS_DEFAULT = false;
 @Command('Help', ['help'], IS_DEFAULT)
 export class HelpCommandHandler extends CommandHandlerBase {
 
-    public async execute(context: TurnContext, args: string) {
+    @Traceable()
+    public async execute(context: TurnContext, command: string, args: string): Promise<ICommandResults> {
         let client = appInsights.defaultClient;
 
         args = (args === undefined || args === null) ? '' : args;
-
-        log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
 
         const card = this.determineCardHelper(args, context);
 
         await context.sendActivity({
             attachments: [card.render()],
         });
+
+        return { status: CommandStatus.Success, message: `Command ${this.displayName} executed successfully.`};
     }
 
     private determineCardHelper(args: string, context: TurnContext): AdaptiveCardHelperBase {

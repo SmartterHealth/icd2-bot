@@ -1,5 +1,5 @@
 import { TurnContext } from 'botbuilder';
-import { Command, CommandHandlerBase } from '../CommandHandlerBase';
+import { Command, CommandHandlerBase, Traceable, ICommandResults, CommandStatus } from '../CommandHandlerBase';
 import { log } from '../../logger';
 import { WelcomeAdaptiveCardHelper } from './WelcomeAdaptiveCardHelper';
 import { settings } from '../../settings';
@@ -20,9 +20,8 @@ export class WelcomeCommandHandler extends CommandHandlerBase {
      * @param context A TurnContext instance containing all the data needed for processing this conversation turn.
      * @param args The arguments sent to the command.
      */
-    public async execute(context: TurnContext, args: string) {
-
-        log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
+    @Traceable()
+    public async execute(context: TurnContext, command: string, args: string): Promise<ICommandResults> {
 
         let card = new WelcomeAdaptiveCardHelper(context);
         card.headerTitle = settings.bot.displayName;
@@ -31,5 +30,7 @@ export class WelcomeCommandHandler extends CommandHandlerBase {
         await context.sendActivity({
             attachments: [card.render()],
         });
+
+        return { status: CommandStatus.Success, message: `Command ${this.displayName} executed successfully.`};
     }
 }

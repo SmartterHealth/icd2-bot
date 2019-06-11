@@ -1,5 +1,42 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
+import { log } from '../logger';
+import { settings } from '../settings';
+import * as appInsights from 'applicationinsights';
+
+export function Traceable(prefix: string = 'ICD2 Command'): MethodDecorator {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        let originalMethod = descriptor.value;
+        // Wrapping the original method
+        descriptor.value = async function (...args: any[]) {
+            try {
+                // Simple trace
+                log(`Invoked ${prefix} '${target.displayName}' with the following arguments '${args[2]}'`);
+            } finally {
+                let result: ICommandResults = await originalMethod.apply(this, args)
+                log(`Invoked ${prefix} '${target.displayName}' with the following results '${result.message}'`);
+
+                // Custom event tracking in Azure AppInsights.
+                if (settings.appInsights.disabled == false) {
+                    let client = appInsights.defaultClient;
+                    client.trackEvent({
+                        'name': prefix,
+                        properties: {
+                            commandText: '' + args[1],
+                            commandName: target.displayName,
+                            commandStatus: '' + result.status,
+                            commandStatusText: result.message,
+                            args: '' + args[2]
+                        }
+                    });
+                }
+
+                return result;
+            }
+        }
+
+    }
+}
 
 /**
  * Class decorator that exposes command metadata to the BotCommandAdapter.
@@ -7,7 +44,7 @@ import 'reflect-metadata';
  * @param commands A list of aliases for the command.
  * @param isDefault A flag that indicates whether the command is the default command.
  */
-export function Command(displayName: string, commands: string[], isDefault = false ): ClassDecorator {
+export function Command(displayName: string, commands: string[], isDefault = false): ClassDecorator {
 
     // tslint:disable-next-line:ban-types
     return (target: (Function)) => {
@@ -62,5 +99,17 @@ export abstract class CommandHandlerBase {
      * @param context A TurnContext instance containing all the data needed for processing this conversation turn.
      * @param args The arguments send to the command.
      */
-    public abstract execute(context: TurnContext, args: string);
+    public abstract execute(context: TurnContext, command: string, args: string): Promise<ICommandResults>;
+}
+
+export enum CommandStatus {
+    Success,
+    FailNoError,
+    Error
+}
+
+export interface ICommandResults {
+    status: CommandStatus,
+    message: string,
+    error?: Error
 }

@@ -3,9 +3,10 @@ import * as sql from 'mssql';
 import 'reflect-metadata';
 import { log } from '../../logger';
 import { settings } from '../../settings';
-import { Command, CommandHandlerBase } from '../CommandHandlerBase';
+import { Command, CommandHandlerBase, Traceable, ICommandResults, CommandStatus } from '../CommandHandlerBase';
 import { IICD10Code, IICD10SearchResults } from '../IICD10Code';
 import { SearchCodesAdaptiveCardHelper } from './SearchCodesAdaptiveCardHelper';
+import { Assert } from '../../assert';
 
 /**
  * Simple flag that indicates whether this is the default command.
@@ -15,40 +16,76 @@ const IS_DEFAULT = false;
 @Command('Search Codes', ['search codes', 'sc', 'search code'], IS_DEFAULT)
 export class SearchCodesCommandHandler extends CommandHandlerBase {
 
-    public async execute(context: TurnContext, args: string) {
-        log(`Bot Command '${this.displayName}' called with the following arguments ${args}`);
-        const query = parseKeywords(args);
+    @Traceable()
+    public async execute(context: TurnContext, command: string, args: string): Promise<ICommandResults> {
+        args = (args === undefined || args === null) ? '' : args;
+        args = args.trim();
 
-        log(`Searching for codes using query '${query}'`);
-        const results = await searchCodes(query);
+        let results: IICD10SearchResults | null = null;
+        let cmdStatus: CommandStatus = CommandStatus.Success;
+        let cmdStatusText: string;
+        try {
+            const query = parseKeywords(args);
+            log(`Searching for codes using query '${query}'`);
 
-        log(`${results.codes.length} results returned for query '${query}'`);
+            results = await searchCodes(query);
+            log(`${results.codes.length} results returned for query '${query}'`);
+
+            if(results.codes.length > 0) {
+                // We got matches!
+                cmdStatus = CommandStatus.Success;
+                cmdStatusText = `Your search for **'${args}'** returned **${results.codes.length}** results. Click on a result for more details.`;
+            } else {
+                // No matches... :-/
+                cmdStatus = CommandStatus.FailNoError;
+                cmdStatusText = `Your search for **'${args}'** returned **${results.codes.length}** results. Please try again.`;
+            }
+        } catch (err) {
+            cmdStatus = CommandStatus.Error;
+            cmdStatusText = err.toString();
+        }
 
         const card = new SearchCodesAdaptiveCardHelper(context);
         card.args = args;
         card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
-        card.headerDescription = `Your search for **${args}** returned ${results.codes.length} results. ${(results.codes.length > 0) ? " Click on a result for more details." : ""}`;
+        // Hide error messages with generic message.
+        card.headerDescription = (cmdStatus === CommandStatus.Error) ? `An error has occured. Please contact your administrator.` : cmdStatusText;
         card.dataSource = results;
         await context.sendActivity({
             attachments: [card.render()],
         });
+
+        return { status: cmdStatus, message: cmdStatusText};
     }
 }
 
-function parseKeywords(keyword) {
+/**
+ * Parses the keywords into a SQL fulltext WHERE clause.
+ * @param keywords The keywords to parse. Each keyword is joined by the SQL 'AND' operator. Phrases are identified by quotes.
+ */
+function parseKeywords(keywords: string): string  {
+    Assert.isNotNull<String>(keywords, String)
     const regex = /("(.*)")|[^\W\d]+[\u00C0-\u017Fa-zA-Z'](\w|[-'](?=\w))*("(.*)")|[^\W\d]+[\u00C0-\u017Fa-zA-Z'](\w|[-'](?=\w))*/gi;
-    const tokens = keyword.match(regex);
-    return tokens.join(' AND ');
+    const tokens = keywords.match(regex);
+    if(tokens != null) {
+        return tokens.join(' AND ');
+    }
+    return '';
 }
 
-async function searchCodes(keywords): Promise<IICD10SearchResults> {
+/**
+ * Calls the stored procedure that searches for ICD10 codes.
+ * @param query The SQL fulltext WHERE clause.
+ */
+async function searchCodes(query: string): Promise<IICD10SearchResults> {
+    Assert.isNotNull<String>(query, String)
     const codes: IICD10Code[] = [];
     const results: IICD10SearchResults = { codes: (codes) };
     const pool = await sql.connect(settings.db);
 
     try {
         const dbresults = await pool.request()
-            .input('keywords', sql.VarChar(150), keywords)
+            .input('keywords', sql.VarChar(150), query)
             .input('maxrows', sql.Int, settings.searchCodes.maxRows)
             .execute('SEARCH_CODES');
 

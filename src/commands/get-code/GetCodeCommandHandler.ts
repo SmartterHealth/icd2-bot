@@ -1,11 +1,11 @@
 import { TurnContext } from 'botbuilder';
 import * as sql from 'mssql';
 import 'reflect-metadata';
-import { log } from '../../logger';
 import { settings } from '../../settings';
-import { Command, CommandHandlerBase } from '../CommandHandlerBase';
+import { Command, CommandHandlerBase, Traceable, CommandStatus, ICommandResults } from '../CommandHandlerBase';
 import { IICD10Code } from '../IICD10Code';
 import { GetCodeAdaptiveCardHelper } from './GetCodeAdaptiveCardHelper';
+import { ICD2Bot } from '../../icd2bot';
 
 /**
  * Simple flag that indicates whether this is the default command.
@@ -14,34 +14,39 @@ const IS_DEFAULT = false;
 
 @Command('Get Code', ['gc', 'get code', 'code'], IS_DEFAULT)
 export class GetCodeCommandHandler extends CommandHandlerBase {
-    public async execute(context: TurnContext, args: string) {
+
+    @Traceable()
+    public async execute(context: TurnContext, command: string, args: string): Promise<ICommandResults> {
         args = (args === undefined || args === null) ? '' : args;
         args = args.trim();
-        log(`Bot Command '${this.displayName}' called with the following arguments '${args}'`);
-        const code = await getCode(args);
 
-        if (code) {
-            log(`ICD10 code '${args}' found! ${JSON.stringify(code)}.`);
-
-            const card = new GetCodeAdaptiveCardHelper(context);
-            card.args = args;
-            card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
-            card.headerDescription = ``;
-            card.dataSource = code;
-
-            await context.sendActivity({
-                attachments: [card.render()],
-            });
-        } else {
-            const card = new GetCodeAdaptiveCardHelper(context);
-            card.args = args;
-            card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
-            card.headerDescription = `A code for '${args}' was not found. Please try again.`;
-
-            await context.sendActivity({
-                attachments: [card.render()],
-            });
+        let code: ICD2Bot | null = null;
+        let cmdStatus: CommandStatus = CommandStatus.Success;
+        let cmdStatusText: string;
+        try {
+            const code = await getCode(args);
+            if(code) {
+                cmdStatusText = `ICD10 code **'${args}'** found!`;
+            } else {
+                cmdStatusText = `A code for **'${args}'** was not found. Please try again.`;
+                cmdStatus = CommandStatus.FailNoError;
+            }
+        } catch (err) {
+            cmdStatus = CommandStatus.Error;
+            cmdStatusText = err.toString();
         }
+
+        const card = new GetCodeAdaptiveCardHelper(context);
+        card.args = args;
+        card.headerTitle = `${settings.bot.displayName} -> ${this.displayName} -> ${args}`;
+        card.headerDescription = (cmdStatus == CommandStatus.Error) ? `An error has occured. Please contact your administrator.` : cmdStatusText;
+        card.dataSource = code;
+
+        await context.sendActivity({
+            attachments: [card.render()],
+        });
+
+        return { status: (cmdStatus), message: cmdStatusText};
     }
 }
 

@@ -1,8 +1,7 @@
 import { TurnContext } from 'botbuilder';
 import 'reflect-metadata';
 import { Command, CommandHandlerBase } from './CommandHandlerBase';
-import * as appInsights from 'applicationinsights';
-import { settings } from '../settings';
+
 
 export class CommandHandlerAdapter {
 
@@ -41,21 +40,8 @@ export class CommandHandlerAdapter {
             cmd = this._commandMapping[commandAlias];
         }
 
-        // Custom event tracking in Azure AppInsights.
-        if(!settings.appInsights.disabled) {
-            let client = appInsights.defaultClient;
-            client.trackEvent( {
-                'name': `ICD2 Command`,
-                properties: {
-                    commandText: commandAlias,
-                    commandName: cmd.displayName,
-                    args: args
-                }
-            });
-        }
-
         // Execute the command.
-        await cmd.execute(context, (args).trim());
+        await cmd.execute(context, commandAlias.toLowerCase().trim(), (args).trim());
     }
 
     private initCommandTypes(registrations: Array<typeof CommandHandlerBase>) {

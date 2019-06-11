@@ -6,14 +6,13 @@ import * as path from 'path';
 
 export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
 
-    private _dataSource : IICD10SearchResults;
+    private _dataSource: IICD10SearchResults | null;
 
-    public get dataSource() : IICD10SearchResults {
+    public get dataSource(): IICD10SearchResults | null {
         return this._dataSource;
     }
 
-    public set dataSource(searchResults : IICD10SearchResults) {
-        Assert.isNotNull(searchResults);
+    public set dataSource(searchResults: IICD10SearchResults | null) {
         this._dataSource = searchResults;
     }
 
@@ -23,28 +22,15 @@ export class SearchCodesAdaptiveCardHelper extends AdaptiveCardHelperBase {
     }
 
     private renderSearchResults() {
-        this.dataSource.codes.map((result) => {
-            let template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
-            let root = template.items[0];
-            root.columns[0].items[0].text = result.code;
-            root.columns[1].items[0].text = result.description;
-            root.selectAction = this.createAction({ title: result.code, actionType: CardActionType.Submit, data: `get code ${result.code}` });
-            this.card.body.push(template);
-        });
-    }
-
-    public renderAttachment(results: IICD10SearchResults): Attachment {
-
-        results.codes.map((result) => {
-            let template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesTemplate.json'));
-            let root = template.items[0];
-            root.columns[0].items[0].text = result.code;
-            root.columns[1].items[0].text = result.description;
-
-            root.selectAction = this.createAction({title: result.code, actionType: CardActionType.Submit, data: `get code ${result.code}` });
-            this.card.body.push(template);
-        })
-
-        return CardFactory.adaptiveCard(this.card);
+        if (this.dataSource != null) {
+            this.dataSource.codes.map((result) => {
+                let template = SearchCodesAdaptiveCardHelper.loadCardElementJSON(path.join(__dirname, './SearchCodesAdaptiveCardHelper.json'));
+                let root = template.items[0];
+                root.columns[0].items[0].text = result.code;
+                root.columns[1].items[0].text = result.description;
+                root.selectAction = this.createAction({ title: result.code, actionType: CardActionType.Submit, data: `get code ${result.code}` });
+                this.card.body.push(template);
+            });
+        }
     }
 }
