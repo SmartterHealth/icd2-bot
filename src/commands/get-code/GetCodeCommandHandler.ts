@@ -20,11 +20,11 @@ export class GetCodeCommandHandler extends CommandHandlerBase {
         args = (args === undefined || args === null) ? '' : args;
         args = args.trim();
 
-        let code: ICD2Bot | null = null;
+        let code: IICD10Code | null = null;
         let cmdStatus: CommandStatus = CommandStatus.Success;
         let cmdStatusText: string;
         try {
-            const code = await getCode(args);
+            code = await getCode(args);
             if(code) {
                 cmdStatusText = `ICD10 code **'${args}'** found!`;
             } else {
@@ -50,9 +50,9 @@ export class GetCodeCommandHandler extends CommandHandlerBase {
     }
 }
 
-async function getCode(code: string): Promise<IICD10Code | undefined> {
+async function getCode(code: string): Promise<IICD10Code | null> {
     const codes: IICD10Code[] = [];
-    let result: IICD10Code;
+    let result: IICD10Code | null = null;
     const pool = await sql.connect(settings.db);
 
     try {
@@ -62,9 +62,9 @@ async function getCode(code: string): Promise<IICD10Code | undefined> {
 
         if (dbresults.recordset.length > 0) {
             result = dbresults.recordset[0] as IICD10Code;
-            return result;
         }
     } finally {
         sql.close();
     }
+    return result;
 }

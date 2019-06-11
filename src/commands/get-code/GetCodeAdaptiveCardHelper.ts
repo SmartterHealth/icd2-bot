@@ -11,6 +11,7 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
     public get dataSource(): IICD10Code | null {
         return this._dataSource;
     }
+
     public set dataSource(value: IICD10Code | null) {
         this._dataSource = value;
     }
@@ -18,7 +19,6 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
     public render(): Attachment {
         this.renderCore();
         this.renderBingSearch();
-
         return CardFactory.adaptiveCard(this.card);
     }
 
@@ -27,19 +27,18 @@ export class GetCodeAdaptiveCardHelper extends AdaptiveCardHelperBase {
      */
     private renderCore() {
 
-        // Load the JSON template, and set code, description, and chapter.
-        let template = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './GetCodeAdaptiveCardHelper.json'));
         if (this.dataSource != null) {
+            // Load the JSON template, and set code, description, and chapter.
+            let template = AdaptiveCardHelperBase.loadCardElementJSON(path.join(__dirname, './GetCodeAdaptiveCardHelper.json'));
+
             template.items[0].columns[1].items[0].text = this.dataSource.code;
             template.items[1].columns[1].items[0].text = this.dataSource.description;
             template.items[2].columns[1].items[0].text = this.dataSource.chapter;
             template.items[3].columns[1].items[0].text = (this.dataSource.hipaa) ? 'yes' : 'no';
-        } else {
-            template.items = null;
-        }
 
-        // Append to the card's body.
-        this.card.body.push(template);
+            // Append to the card's body.
+            this.card.body.push(template);
+        }
     }
 
     /**
