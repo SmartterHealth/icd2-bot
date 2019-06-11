@@ -1,7 +1,12 @@
 import * as dotenv from 'dotenv';
 import * as process from 'process';
+import { isBoolean } from 'util';
 
 dotenv.config();
+
+function convertToBoolean(value: string | undefined, defaultValue: boolean = false): boolean {
+    return  (value !== undefined && value !== null && (value.toLowerCase() === 'true' || value == '1'));
+}
 
 const settings = {
     bot: {
@@ -23,6 +28,10 @@ const settings = {
     searchCodes: {
         maxRows: checkInt(process.env.SC_MAXROWS, 25),
     },
+    appInsights: {
+        instrumentationKey: process.env.INSTRUMENTATIONKEY,
+        disabled: convertToBoolean(process.env.APPINSIGHTS_DISABLED)
+    }
 };
 
 function checkInt(value, defaultValue) {
