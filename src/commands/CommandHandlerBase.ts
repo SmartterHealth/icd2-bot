@@ -9,26 +9,32 @@ export function Traceable(prefix: string = 'ICD2 Command'): MethodDecorator {
         let originalMethod = descriptor.value;
         // Wrapping the original method
         descriptor.value = async function (...args: any[]) {
+            let result: ICommandResults | null = null;
+            let context: TurnContext = args[0];
             try {
                 // Simple trace
                 log(`Invoked ${prefix} '${target.displayName}' with the following arguments '${args[2]}'`);
+                result = await originalMethod.apply(this, args)
             } finally {
-                let result: ICommandResults = await originalMethod.apply(this, args)
-                log(`Invoked ${prefix} '${target.displayName}' with the following results '${result.message}'`);
 
-                // Custom event tracking in Azure AppInsights.
-                if (settings.appInsights.disabled == false) {
-                    let client = appInsights.defaultClient;
-                    client.trackEvent({
-                        'name': prefix,
-                        properties: {
-                            commandText: '' + args[1],
-                            commandName: target.displayName,
-                            commandStatus: '' + result.status,
-                            commandStatusText: result.message,
-                            args: '' + args[2]
-                        }
-                    });
+                if (result != null) {
+                    log(`Invoked ${prefix} '${target.displayName}' with the following results '${result.message}'`);
+
+                    // Custom event tracking in Azure AppInsights.
+                    if (settings.appInsights.disabled == false) {
+                        let client = appInsights.defaultClient;
+                        client.trackEvent({
+                            'name': prefix,
+                            properties: {
+                                commandText: '' + args[1],
+                                commandName: target.displayName,
+                                commandStatus: '' + result.status,
+                                commandStatusText: result.message,
+                                channelId: context.activity.channelId,
+                                args: '' + args[2]
+                            }
+                        });
+                    }
                 }
 
                 return result;
