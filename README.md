@@ -1,8 +1,7 @@
 ICD2 - HLS Central West ICD10 Bot
 =================================
 
-![](media/image1.png){width="1.3333333333333333in"
-height="1.3333333333333333in"}
+![](media/image1.png)
 
 Overview
 ========
@@ -44,7 +43,7 @@ Framework](https://dev.botframework.com/),
 [TypeScript](https://www.typescriptlang.org/) that handles user input
 for searching ICD10 codes.
 
-![](media/image2.png){width="3.0in" height="1.7342946194225721in"}
+![](media/image2.png)
 
 Figure 1: ICD2-Bot in Action
 
@@ -177,7 +176,7 @@ the following values:
 
 -   DB\_NAME=*ICD2DB*
 
-![](media/image3.png){width="6.5in" height="2.717361111111111in"}
+![](media/image3.png)
 
 Figure 2: Configuring the ICD2 App Service instance in the Azure Portal.
 
